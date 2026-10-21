@@ -1,6 +1,6 @@
-Contact: mailto:security@traccia-fondi.com
-Contact: mailto:support@traccia-fondi.com
+Contact: mailto:security@clari-ai.com
+Contact: mailto:support@clari-ai.com
 Expires: 2027-12-31T23:59:59.000Z
 Preferred-Languages: it, en
-Canonical: https://traccia-fondi.com/.well-known/security.txt
-Policy: https://traccia-fondi.com/security
+Canonical: https://clari-ai.com/.well-known/security.txt
+Policy: https://clari-ai.com/security

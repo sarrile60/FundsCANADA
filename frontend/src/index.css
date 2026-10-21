@@ -1,4 +1,4 @@
-/* Traccia Fondi global styles + premium fintech/cybersecurity theme */
+/* Clari AI global styles + premium fintech/cybersecurity theme */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -57,7 +57,7 @@ html, body {
   * { @apply border-border; }
 }
 
-/* === Traccia Fondi premium background === */
+/* === Clari AI premium background === */
 .aif-app-bg {
   background:
     radial-gradient(1200px 700px at 90% -20%, rgba(95,227,201,0.12), transparent 60%),
@@ -136,7 +136,8 @@ html, body {
   line-height: 1.5;
 }
 .aif-input::placeholder { color: rgba(159,176,204,0.55); }
-/* When input has Tailwind padding utilities (pl-10, pr-10), they win over the base 14px */
+/* When input has Tailwind padding utilities (pl-9, pl-10, pr-10), they win over the base 14px */
+.aif-input.pl-9  { padding-left: 36px; }
 .aif-input.pl-10 { padding-left: 40px; }
 .aif-input.pr-10 { padding-right: 40px; }
 .aif-input:focus { border-color: rgba(95,227,201,0.6); box-shadow: 0 0 0 3px rgba(95,227,201,0.10); }
@@ -253,6 +254,18 @@ html, body {
 
 /* Print-friendly */
 @media print { .no-print { display: none !important; } body { background: white; color: black; } }
+
+/* PIN shake animation */
+@keyframes aif-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+.animate-shake {
+  animation: aif-shake 0.5s ease-in-out;
+}
 
 /* Hide any externally-injected badges */
 #emergent-badge,

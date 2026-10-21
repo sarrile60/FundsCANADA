@@ -1,173 +1,168 @@
-// UserApp — main authenticated experience for end users.
-// Flow: start-procedure (pick tier + consent) -> animation -> located -> request -> done
-import React, { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+// UserApp — profile page + persistent trace dashboard
+// Flow: if not logged in → redirect to /register
+//       if logged in, no trace → show trace form
+//       if logged in, trace exists → show radar panel with real elapsed time
+import React, { useEffect, useState, useCallback } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import {
-  Shield, ArrowRight, Lock, CheckCircle2, MapPin, Banknote, Wallet,
-  Sparkles, ShieldAlert, Mail, User, Send, Home, Building2, Calendar
+  Shield, ArrowRight, Lock, CheckCircle2, Wallet, Sparkles,
+  ShieldAlert, Mail, User, X, Upload, FileText, LogOut,
+  Phone, Calendar, Clock, Activity, RefreshCw, BadgeEuro, ExternalLink
 } from "lucide-react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import ProcedureAnimation from "./ProcedureAnimation";
-import DocumentUploader from "./DocumentUploader";
-import { useAuth } from "../auth";
 import { useI18n } from "../i18n";
-import { api } from "../api";
+import { useAuth } from "../auth";
+import axios from "axios";
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const TIERS = [
-  { id: "5000_20000",   key: "proc.tier.5_20" },
-  { id: "20000_50000",  key: "proc.tier.20_50" },
-  { id: "50000_100000", key: "proc.tier.50_100" },
-  { id: "100000_plus",  key: "proc.tier.100_plus" },
+  { id: "5000_20000",   label: "< €20.000" },
+  { id: "20000_50000",  label: "€20.000 - €50.000" },
+  { id: "50000_100000", label: "€50.000 - €100.000" },
+  { id: "100000_plus",  label: "€100.000+" },
 ];
 
+// Format elapsed seconds into human-readable "Xh Ym"
+function fmtElapsed(seconds) {
+  if (seconds <= 0) return "0s";
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  if (h > 0) return `${h}h ${m}m`;
+  if (m > 0) return `${m}m ${s}s`;
+  return `${s}s`;
+}
+
 export default function UserApp() {
-  const { user, logout } = useAuth();
-  const { t } = useI18n();
+  const { lang } = useI18n();
+  const { user, token, logout } = useAuth();
   const nav = useNavigate();
+  const isIt = lang === "it";
 
-  // view: idle | animating | located | requested
-  const [view, setView] = useState("idle");
-  const [tier, setTier] = useState("");
-  const [consent, setConsent] = useState(false);
-  const [busy, setBusy] = useState(false);
-  // Personal info — collected on this screen, saved on backend, prefilled later.
-  const [first, setFirst] = useState("");
-  const [last,  setLast]  = useState("");
-  const [cmail, setCmail] = useState("");
-  const [dob,   setDob]   = useState("");
-
-  // server state
-  const [state, setState] = useState(null);
+  const [tab, setTab] = useState("account"); // "account" | "cases"
+  const [activeTrace, setActiveTrace] = useState(null);
+  const [loadingTrace, setLoadingTrace] = useState(true);
+  const [traceView, setTraceView] = useState("list"); // "list" | "form"
 
   useEffect(() => {
-    (async () => {
-      try {
-        const s = await api.procedureState();
-        setState(s);
-        // restore previously saved values if user reloads
-        if (s?.procedure_first_name)   setFirst(s.procedure_first_name);
-        if (s?.procedure_last_name)    setLast(s.procedure_last_name);
-        if (s?.procedure_contact_email) setCmail(s.procedure_contact_email);
-        if (s?.procedure_date_of_birth) setDob(s.procedure_date_of_birth);
-      } catch {}
-    })();
-  }, []);
+    if (!user) nav("/register", { replace: true });
+    else if (user.role === "admin") nav("/admin/dashboard", { replace: true });
+  }, [user, nav]);
 
-  if (!user) return <Navigate to="/login" replace state={{ next: "/app" }}/>;
-  if (user.role === "admin") return <Navigate to="/admin/dashboard" replace/>;
-
-  const destination = user.recovery_destination;
-  const destLabel = destination === "zenthos_wallet" ? t("trc.dest.zenthos_wallet") : t("trc.dest.chiantin_bank");
-  const DestIcon = destination === "zenthos_wallet" ? Wallet : Building2;
-
-  const startProcedure = async () => {
-    if (!first.trim() || !last.trim() || !cmail.trim() || !dob) {
-      toast.error(t("proc.fill_personal")); return;
-    }
-    if (!tier) { toast.error(t("proc.pick_first")); return; }
-    if (!consent) { toast.error(t("proc.consent_first")); return; }
-    setBusy(true);
+  const loadTrace = useCallback(async () => {
+    if (!user || !token) return;
+    setLoadingTrace(true);
     try {
-      const s = await api.startProcedure({
-        amount_tier: tier,
-        first_name: first.trim(),
-        last_name: last.trim(),
-        contact_email: cmail.trim(),
-        date_of_birth: dob,
+      const { data } = await axios.get(`${API}/users/trace`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-      setState(s);
-      setView("animating");
+      setActiveTrace(data || null);
     } catch (e) {
-      const d = e?.response?.data?.detail;
-      const msg = typeof d === "string" ? d : Array.isArray(d) ? d.map(x => x?.msg || JSON.stringify(x)).join(", ") : "Error starting procedure";
-      toast.error(msg);
-    } finally { setBusy(false); }
-  };
+      if (e?.response?.status !== 404) console.error("Failed to load trace:", e);
+      setActiveTrace(null);
+    } finally {
+      setLoadingTrace(false);
+    }
+  }, [user, token]);
 
-  const onComplete = async () => {
-    try { await api.completeProcedure(); } catch {}
-    setView("located");
-  };
+  useEffect(() => { loadTrace(); }, [loadTrace]);
 
-  const onCancel = () => {
-    setView("idle");
-    toast.info(t("trc.canceled"));
-  };
+  if (!user) return null;
+
+  const initials = `${(user.first_name||"")[0]||""}${(user.last_name||"")[0]||""}`.toUpperCase();
 
   return (
     <div className="aif-app-bg min-h-screen relative">
       <div className="aif-grid-overlay absolute inset-0 pointer-events-none"/>
       <div className="relative">
         <Navbar/>
-        <main className="max-w-5xl mx-auto px-5 lg:px-8 py-8 space-y-5">
+        <main className="max-w-5xl mx-auto px-5 lg:px-8 py-8">
+
+          {/* ── TOP PROFILE BAR ── */}
+          <div className="aif-card p-4 md:p-5 mb-6 flex items-center justify-between gap-4 flex-wrap">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#5FE3C9] to-[#6E8BFF] flex items-center justify-center text-[#06122A] font-black text-base shrink-0">
+                {initials || <User size={18}/>}
+              </div>
+              <div>
+                <div className="text-white font-semibold">{user.first_name} {user.last_name}</div>
+                <div className="text-[12px] text-[var(--aif-text-dim)]">{user.email}</div>
+              </div>
+            </div>
+            <button onClick={() => { logout(); nav("/"); }} className="aif-btn-ghost !py-2 !px-3 !text-sm inline-flex items-center gap-2" data-testid="app-logout">
+              <LogOut size={14}/> {isIt ? "Esci" : "Sign out"}
+            </button>
+          </div>
+
+          {/* ── TABS ── */}
+          <div className="flex gap-2 mb-6">
+            <button
+              onClick={() => setTab("account")}
+              data-testid="tab-account"
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-[14px] font-medium transition border ${tab === "account" ? "border-[#5FE3C9] bg-[#5FE3C9]/10 text-white" : "border-[var(--aif-line)] text-[var(--aif-text-dim)] hover:text-white"}`}
+            >
+              <User size={15}/> Account
+            </button>
+            <button
+              onClick={() => setTab("cases")}
+              data-testid="tab-cases"
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-[14px] font-medium transition border ${tab === "cases" ? "border-[#5FE3C9] bg-[#5FE3C9]/10 text-white" : "border-[var(--aif-line)] text-[var(--aif-text-dim)] hover:text-white"}`}
+            >
+              <Shield size={15}/> {isIt ? "I miei casi" : "My cases"}
+            </button>
+          </div>
+
           <AnimatePresence mode="wait">
-            {view === "idle" && (
-              <motion.div key="idle" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-                <StartProcedure
-                  user={user}
-                  tier={tier} setTier={setTier}
-                  consent={consent} setConsent={setConsent}
-                  first={first} setFirst={setFirst}
-                  last={last}   setLast={setLast}
-                  cmail={cmail} setCmail={setCmail}
-                  dob={dob}     setDob={setDob}
-                  busy={busy}
-                  onStart={startProcedure}
-                />
+            {/* ── ACCOUNT TAB ── */}
+            {tab === "account" && (
+              <motion.div key="account" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+                <ProfileCard user={user} isIt={isIt} onLogout={() => { logout(); nav("/"); }}/>
               </motion.div>
             )}
 
-            {view === "animating" && (
-              <motion.div key="anim" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                className="!max-w-none -mx-5 lg:-mx-8">
-                <ProcedureAnimation
-                  duration={120}
-                  destination={destination}
-                  locatedAmount={state?.located_amount || 0}
-                  onComplete={onComplete}
-                  onCancel={onCancel}
-                />
-              </motion.div>
-            )}
-
-            {view === "located" && (
-              <motion.div key="loc" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-                <FundsLocated
-                  destination={destination}
-                  destLabel={destLabel}
-                  DestIcon={DestIcon}
-                  amount={state?.located_amount || 0}
-                  onContinue={() => setView("request")}
-                />
-              </motion.div>
-            )}
-
-            {view === "request" && (
-              <motion.div key="req" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-                <RecoveryRequest
-                  destLabel={destLabel}
-                  prefill={{
-                    first: state?.procedure_first_name || first,
-                    last:  state?.procedure_last_name  || last,
-                    email: state?.procedure_contact_email || cmail,
-                  }}
-                  onDone={() => setView("requested")}
-                />
-              </motion.div>
-            )}
-
-            {view === "requested" && (
-              <motion.div key="done" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-                <RequestSuccess
-                  destLabel={destLabel}
-                  onHome={() => { logout(); nav("/"); }}
-                />
+            {/* ── MY CASES TAB ── */}
+            {tab === "cases" && (
+              <motion.div key="cases" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+                {loadingTrace ? (
+                  <div className="aif-card p-12 text-center">
+                    <RefreshCw size={28} className="mx-auto text-[#5FE3C9] animate-spin mb-3"/>
+                    <p className="text-[var(--aif-text-dim)]">{isIt ? "Caricamento…" : "Loading…"}</p>
+                  </div>
+                ) : (
+                  <AnimatePresence mode="wait">
+                    {!activeTrace && traceView === "list" && (
+                      <motion.div key="no-trace" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+                        <NoTraceCard isIt={isIt} onStart={() => setTraceView("form")}/>
+                      </motion.div>
+                    )}
+                    {!activeTrace && traceView === "form" && (
+                      <motion.div key="trace-form" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+                        <TraceForm
+                          user={user}
+                          token={token}
+                          isIt={isIt}
+                          onCancel={() => setTraceView("list")}
+                          onStarted={(trace) => { setActiveTrace(trace); setTraceView("list"); }}
+                        />
+                      </motion.div>
+                    )}
+                    {activeTrace && (
+                      <motion.div key="active-trace" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                        <ActiveTracePanel trace={activeTrace} isIt={isIt} onRefresh={loadTrace}/>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
+
         </main>
         <Footer/>
       </div>
@@ -175,110 +170,318 @@ export default function UserApp() {
   );
 }
 
+
 // ============================================================
-//   IDLE — pick tier + consent + start
+//   PROFILE CARD
 // ============================================================
-function StartProcedure({ user, tier, setTier, consent, setConsent, first, setFirst, last, setLast, cmail, setCmail, dob, setDob, busy, onStart }) {
-  const { t } = useI18n();
-  const initials = `${(user.first_name || "?").charAt(0)}${(user.last_name || "").charAt(0)}`.toUpperCase();
+function ProfileCard({ user, isIt, onLogout }) {
+  const formatDob = (dob) => {
+    if (!dob) return "—";
+    try {
+      const d = new Date(dob);
+      return d.toLocaleDateString(isIt ? "it-IT" : "en-US", { year: "numeric", month: "long", day: "numeric" });
+    } catch { return dob; }
+  };
+
+  const initials = `${(user.first_name || "")[0] || ""}${(user.last_name || "")[0] || ""}`.toUpperCase();
+
   return (
-    <div className="space-y-5" data-testid="start-procedure">
-      {/* Hero header — centered */}
-      <div className="aif-card aif-glow p-6 md:p-10 relative overflow-hidden">
-        <div className="aif-grid-overlay absolute inset-0 opacity-30 pointer-events-none"/>
-        <div className="relative z-10 text-center">
-          {/* Welcome pill + tag (centered, with breathing room) */}
-          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 mb-6">
-            <div className="inline-flex items-center gap-3 aif-card !rounded-full !py-2 !px-4">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#5FE3C9] to-[#6E8BFF] flex items-center justify-center text-[#06122A] font-bold text-[13px]">
-                {initials}
-              </div>
-              <div className="text-left">
-                <div className="text-white font-semibold text-[13px] leading-tight">{user.first_name} {user.last_name}</div>
-                <div className="text-[11px] text-[var(--aif-text-dim)] leading-tight">{user.email}</div>
-              </div>
-            </div>
-            <div className="aif-chip"><Sparkles size={12} className="text-[#5FE3C9]"/> {t("proc.tag")}</div>
+    <div className="aif-card p-5 md:p-7" data-testid="profile-card">
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div className="flex items-center gap-4">
+          {/* Avatar */}
+          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#5FE3C9] to-[#6E8BFF] flex items-center justify-center text-[#06122A] font-black text-xl shrink-0">
+            {initials || <User size={24}/>}
           </div>
+          <div>
+            <h1 className="text-xl font-bold text-white">
+              {user.first_name} {user.last_name}
+            </h1>
+            <div className="text-[13px] text-[var(--aif-text-dim)]">{user.email}</div>
+          </div>
+        </div>
+        <button
+          onClick={onLogout}
+          className="aif-btn-ghost !py-2 !px-3 !text-sm inline-flex items-center gap-2"
+          data-testid="app-logout"
+        >
+          <LogOut size={14}/> {isIt ? "Esci" : "Sign out"}
+        </button>
+      </div>
 
-          <h1 className="section-title mt-2 mx-auto max-w-3xl">{t("proc.title")}</h1>
-          <p className="text-[var(--aif-text-dim)] mt-4 max-w-2xl mx-auto leading-relaxed">{t("proc.subtitle")}</p>
+      {/* Profile details */}
+      <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3">
+        {user.phone && (
+          <InfoItem icon={Phone} label={isIt ? "Telefono" : "Phone"} value={user.phone}/>
+        )}
+        {user.date_of_birth && (
+          <InfoItem icon={Calendar} label={isIt ? "Data di nascita" : "Date of birth"} value={formatDob(user.date_of_birth)}/>
+        )}
+        <InfoItem
+          icon={Shield}
+          label={isIt ? "Tipo account" : "Account type"}
+          value={user.type === "registered" ? (isIt ? "Registrato" : "Registered") : (isIt ? "Gestito" : "Managed")}
+        />
+        <InfoItem
+          icon={Calendar}
+          label={isIt ? "Membro dal" : "Member since"}
+          value={user.created_at ? new Date(user.created_at).toLocaleDateString(isIt ? "it-IT" : "en-US", { year: "numeric", month: "short" }) : "—"}
+        />
+      </div>
+    </div>
+  );
+}
+
+function InfoItem({ icon: Icon, label, value }) {
+  return (
+    <div className="aif-card !rounded-xl p-3">
+      <div className="flex items-center gap-1.5 mb-1">
+        <Icon size={12} className="text-[#5FE3C9]"/>
+        <span className="text-[10px] uppercase tracking-[0.15em] text-[var(--aif-text-dim)]">{label}</span>
+      </div>
+      <div className="text-[13px] text-white font-medium truncate">{value || "—"}</div>
+    </div>
+  );
+}
+
+// ============================================================
+//   NO TRACE CARD — prompt to start
+// ============================================================
+function NoTraceCard({ isIt, onStart }) {
+  return (
+    <div className="aif-card aif-glow p-7 md:p-10 text-center relative overflow-hidden" data-testid="no-trace-card">
+      <div className="aif-grid-overlay absolute inset-0 opacity-25 pointer-events-none"/>
+      <div className="relative z-10">
+        <div className="w-16 h-16 rounded-full bg-[#5FE3C9]/15 border border-[#5FE3C9]/40 flex items-center justify-center mx-auto mb-4">
+          <Shield size={32} className="text-[#5FE3C9]"/>
+        </div>
+        <h2 className="text-xl font-bold text-white">
+          {isIt ? "Nessuna procedura attiva" : "No active procedure"}
+        </h2>
+        <p className="text-[var(--aif-text-dim)] mt-2 max-w-lg mx-auto text-[14px]">
+          {isIt
+            ? "Avvia la procedura di tracciamento per iniziare ad analizzare il percorso dei tuoi fondi."
+            : "Start the tracing procedure to begin analyzing the path of your funds."}
+        </p>
+        <button
+          onClick={onStart}
+          className="aif-btn-primary inline-flex items-center gap-2 mt-6"
+          data-testid="start-trace-btn"
+        >
+          {isIt ? "Avvia Tracciamento" : "Start Tracing"} <ArrowRight size={16}/>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+//   TRACE FORM
+// ============================================================
+function TraceForm({ user, token, isIt, onCancel, onStarted }) {
+  const [tier, setTier] = useState("");
+  const [code, setCode] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [docs, setDocs] = useState([]);
+  const [busy, setBusy] = useState(false);
+
+  const uploadDoc = (file) => {
+    if (docs.length >= 5) { toast.error(isIt ? "Massimo 5 documenti" : "Maximum 5 documents"); return; }
+    const allowed = ["image/jpeg", "image/jpg", "image/png", "image/webp", "application/pdf"];
+    if (!allowed.includes(file.type)) { toast.error(isIt ? "Tipo file non supportato" : "Unsupported file type"); return; }
+    if (file.size > 25 * 1024 * 1024) { toast.error(isIt ? "File troppo grande" : "File too large"); return; }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setDocs(prev => [...prev, { id: Date.now(), name: file.name, type: file.type, size: file.size, file, preview: file.type.startsWith("image/") ? e.target.result : null }]);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const startTrace = async () => {
+    if (!tier) { toast.error(isIt ? "Seleziona un importo" : "Select an amount range"); return; }
+    if (!code.trim()) { toast.error(isIt ? "Inserisci il codice di accesso" : "Enter the access code"); return; }
+    if (!consent) { toast.error(isIt ? "Conferma il consenso" : "Confirm consent"); return; }
+
+    setBusy(true);
+    try {
+      const { data } = await axios.post(`${API}/trace/start`, {
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        access_code: code.trim(),
+        amount_tier: tier,
+      }, { headers: { Authorization: `Bearer ${token}` } });
+
+      // Upload docs
+      for (const doc of docs) {
+        const formData = new FormData();
+        formData.append("file", doc.file);
+        try {
+          await axios.post(`${API}/trace/${data.trace_id}/upload`, formData, {
+            headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` },
+          });
+          } catch (uploadErr) {
+            console.warn("Doc upload failed:", uploadErr);
+          }
+      }
+
+      toast.success(isIt ? "Procedura avviata" : "Procedure started");
+      onStarted({
+        id: data.trace_id,
+        located_amount: data.located_amount,
+        destination_name: data.destination_name,
+        destination_url: data.destination_url,
+        created_at: data.created_at,
+        status: "started",
+        email_24h_sent: false,
+        email_50h_sent: false,
+      });
+    } catch (e) {
+      const detail = e?.response?.data?.detail;
+      toast.error(typeof detail === "string" ? detail : (isIt ? "Errore avvio procedura" : "Error starting procedure"));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="space-y-5" data-testid="trace-form">
+      {/* Header */}
+      <div className="aif-card aif-glow p-6 md:p-8 relative overflow-hidden">
+        <div className="aif-grid-overlay absolute inset-0 opacity-25 pointer-events-none"/>
+        <div className="relative z-10">
+          <div className="flex items-center justify-between mb-3">
+            <div className="aif-chip"><Sparkles size={12} className="text-[#5FE3C9]"/> {isIt ? "Procedura di tracciamento" : "Tracing procedure"}</div>
+            <button onClick={onCancel} className="text-[var(--aif-text-dim)] hover:text-white p-1"><X size={18}/></button>
+          </div>
+          <h2 className="text-xl font-bold text-white">
+            {isIt ? "Avvia la procedura di tracciamento fondi" : "Start the fund-tracing procedure"}
+          </h2>
+          <p className="text-[var(--aif-text-dim)] mt-2 text-[14px]">
+            {isIt
+              ? "Inserisci il codice di accesso e l'importo perso. I tuoi dati personali sono già associati al tuo account."
+              : "Enter the access code and lost amount. Your personal details are already linked to your account."}
+          </p>
+          <div className="mt-3 aif-card !rounded-xl p-3 !bg-[#5FE3C9]/5 border-[#5FE3C9]/20 inline-block">
+            <span className="text-[13px] text-[#5FE3C9]">
+              <User size={13} className="inline mr-1.5 -mt-0.5"/>
+              {user.first_name} {user.last_name} · {user.email}
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* Personal info card */}
-      <div className="aif-card p-6 md:p-8" data-testid="personal-info">
-        <div className="text-[12px] uppercase tracking-[0.2em] text-[#5FE3C9]">{t("proc.personal.title")}</div>
-        <p className="text-[13px] text-[var(--aif-text-dim)] mt-1">{t("proc.personal.subtitle")}</p>
-        <div className="grid sm:grid-cols-2 gap-3 mt-5">
-          <div>
-            <label className="aif-label">{t("proc.first_name")}</label>
-            <div className="relative">
-              <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--aif-text-dim)]"/>
-              <input className="aif-input pl-10" data-testid="proc-first" value={first} onChange={(e) => setFirst(e.target.value)} placeholder={t("proc.first_name_ph")} required/>
-            </div>
-          </div>
-          <div>
-            <label className="aif-label">{t("proc.last_name")}</label>
-            <div className="relative">
-              <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--aif-text-dim)]"/>
-              <input className="aif-input pl-10" data-testid="proc-last" value={last} onChange={(e) => setLast(e.target.value)} placeholder={t("proc.last_name_ph")} required/>
-            </div>
-          </div>
-          <div className="sm:col-span-2">
-            <label className="aif-label">{t("proc.contact_email")}</label>
-            <div className="relative">
-              <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--aif-text-dim)]"/>
-              <input type="email" className="aif-input pl-10" data-testid="proc-email" value={cmail} onChange={(e) => setCmail(e.target.value)} placeholder={t("proc.email_ph")} required/>
-            </div>
-          </div>
-          <div className="sm:col-span-2">
-            <label className="aif-label">{t("proc.date_of_birth")}</label>
-            <div className="relative">
-              <Calendar size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--aif-text-dim)]"/>
-              <input type="date" className="aif-input pl-10" data-testid="proc-dob" value={dob} onChange={(e) => setDob(e.target.value)} max={new Date().toISOString().slice(0,10)} required/>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Documents (optional) */}
-      <DocumentUploader/>
-
-      {/* Tier picker */}
+      {/* Access code + amount */}
       <div className="aif-card p-6 md:p-8">
-        <div className="text-[12px] uppercase tracking-[0.2em] text-[#5FE3C9] mb-3">{t("proc.tier.label")}</div>
-        <div className="grid sm:grid-cols-2 gap-3" data-testid="tier-picker">
-          {TIERS.map(opt => {
-            const sel = tier === opt.id;
-            return (
-              <button key={opt.id} onClick={() => setTier(opt.id)}
-                data-testid={`tier-${opt.id}`}
-                className={`aif-card !rounded-xl p-4 text-left flex items-center gap-3 transition ${sel ? "!border-[#5FE3C9] aif-glow" : ""}`}>
-                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${sel ? "bg-[#5FE3C9] border-[#5FE3C9]" : "border-[var(--aif-line)]"}`}>
-                  {sel && <CheckCircle2 size={14} className="text-[#06122A]"/>}
-                </div>
-                <div>
-                  <div className="text-white font-semibold">{t(opt.key)}</div>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        <label className="flex items-start gap-3 mt-6 aif-card !rounded-xl p-4 cursor-pointer" data-testid="consent-box">
-          <input type="checkbox" className="accent-[#5FE3C9] mt-1" checked={consent} onChange={(e) => setConsent(e.target.checked)}/>
-          <span className="text-[13px] text-[var(--aif-text-dim)] leading-relaxed">{t("proc.consent")}</span>
-        </label>
-
-        <div className="mt-6 flex flex-wrap items-center gap-3 justify-between">
-          <div className="text-[12px] text-[var(--aif-text-dim)] flex items-center gap-2">
-            <Lock size={13} className="text-[#5FE3C9]"/> AES-256 · TLS 1.3 · {t("trc.do_not_close")}
+        <div className="space-y-4">
+          <div>
+            <label className="aif-label">{isIt ? "Codice di accesso" : "Access code"} *</label>
+            <div className="relative">
+              <Lock size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--aif-text-dim)]"/>
+              <input
+                type="text"
+                className="aif-input pl-9 font-mono tracking-wider"
+                data-testid="trace-code"
+                value={code}
+                onChange={e => setCode(e.target.value.toUpperCase())}
+                placeholder="XXXXXX"
+              />
+            </div>
+            <p className="text-[11px] text-[var(--aif-text-dim)] mt-1">
+              {isIt ? "Il codice ti è stato fornito dal tuo consulente." : "The code was provided by your consultant."}
+            </p>
           </div>
-          <button onClick={onStart} disabled={busy} data-testid="proc-start"
+
+          <div>
+            <div className="text-[12px] uppercase tracking-[0.2em] text-[#5FE3C9] mb-3">
+              {isIt ? "Importo perso (intervallo)" : "Amount lost (range)"} *
+            </div>
+            <div className="grid sm:grid-cols-2 gap-3" data-testid="tier-picker">
+              {TIERS.map(opt => {
+                const sel = tier === opt.id;
+                return (
+                  <button key={opt.id} onClick={() => setTier(opt.id)}
+                    data-testid={`tier-${opt.id}`}
+                    className={`aif-card !rounded-xl p-4 text-left flex items-center gap-3 transition ${sel ? "!border-[#5FE3C9] aif-glow" : ""}`}>
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${sel ? "bg-[#5FE3C9] border-[#5FE3C9]" : "border-[var(--aif-line)]"}`}>
+                      {sel && <CheckCircle2 size={12} className="text-[#06122A]"/>}
+                    </div>
+                    <div className="text-white font-semibold">{opt.label}</div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Optional docs */}
+      <div className="aif-card p-6 md:p-8">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <div className="text-[12px] uppercase tracking-[0.2em] text-[#5FE3C9]">
+              {isIt ? "Documenti di prova" : "Proof documents"} <span className="text-[var(--aif-text-dim)] normal-case tracking-normal text-[11px]">({isIt ? "opzionale" : "optional"})</span>
+            </div>
+            <p className="text-[13px] text-[var(--aif-text-dim)] mt-1">
+              {isIt ? "Screenshot, ricevute, estratti — qualsiasi prova della truffa." : "Screenshots, receipts, statements — any proof of the scam."}
+            </p>
+          </div>
+          <span className="text-[12px] text-[var(--aif-text-dim)]">{docs.length}/5</span>
+        </div>
+        <div
+          className="border-2 border-dashed border-[var(--aif-line)] rounded-xl p-5 text-center hover:border-[#5FE3C9]/50 transition cursor-pointer"
+          onClick={() => document.getElementById("trace-doc-input").click()}
+          onDrop={e => { e.preventDefault(); Array.from(e.dataTransfer.files).forEach(uploadDoc); }}
+          onDragOver={e => e.preventDefault()}
+        >
+          <Upload size={28} className="mx-auto text-[var(--aif-text-dim)] mb-1"/>
+          <p className="text-[13px] text-[var(--aif-text-dim)]">{isIt ? "Trascina o clicca per caricare" : "Drag or click to upload"}</p>
+          <p className="text-[11px] text-[var(--aif-text-dim)] mt-0.5">JPG · PNG · PDF · max 25MB</p>
+          <input id="trace-doc-input" type="file" className="hidden" accept="image/jpeg,image/png,image/webp,application/pdf" multiple onChange={e => Array.from(e.target.files).forEach(uploadDoc)}/>
+        </div>
+        {docs.length > 0 && (
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mt-3">
+            {docs.map(d => (
+              <div key={d.id} className="relative group">
+                <div className="aif-card !p-1.5 aspect-square flex items-center justify-center overflow-hidden">
+                  {d.preview ? <img src={d.preview} alt={d.name} className="w-full h-full object-cover rounded"/> : <FileText size={24} className="text-[var(--aif-text-dim)]"/>}
+                </div>
+                <button onClick={() => setDocs(prev => prev.filter(x => x.id !== d.id))} className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition"><X size={11}/></button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Consent + submit */}
+      <div className="aif-card p-6 md:p-8">
+        <label className="flex items-start gap-3 aif-card !rounded-xl p-4 cursor-pointer mb-5">
+          <input type="checkbox" className="accent-[#5FE3C9] mt-0.5" checked={consent} onChange={e => setConsent(e.target.checked)} data-testid="trace-consent"/>
+          <span className="text-[13px] text-[var(--aif-text-dim)] leading-relaxed">
+            {isIt
+              ? "Confermo che le informazioni fornite sono accurate e autorizzo l'avvio della procedura di tracciamento."
+              : "I confirm the information provided is accurate and I authorize the start of the tracing procedure."}
+          </span>
+        </label>
+        <div className="flex flex-wrap items-center gap-3 justify-between">
+          <div className="text-[12px] text-[var(--aif-text-dim)] flex items-center gap-2">
+            <Lock size={12} className="text-[#5FE3C9]"/> AES-256 · TLS 1.3 · GDPR
+          </div>
+          <button onClick={startTrace} disabled={busy} data-testid="trace-submit"
             className="aif-btn-primary inline-flex items-center gap-2 disabled:opacity-60">
-            {busy ? t("proc.start_busy") : t("proc.start")} <ArrowRight size={16}/>
+            {busy ? (isIt ? "Avvio…" : "Starting…") : (isIt ? "Avvia Tracciamento" : "Start Tracing")} <ArrowRight size={16}/>
           </button>
+        </div>
+      </div>
+
+      {/* Security notice */}
+      <div className="aif-card p-4 !border-l-4 !border-l-[#FFB454]">
+        <div className="flex items-start gap-3">
+          <ShieldAlert size={16} className="text-[#FFB454] mt-0.5 shrink-0"/>
+          <p className="text-[13px] text-[var(--aif-text-dim)]">
+            <strong className="text-[#FFB454]">{isIt ? "Attenzione." : "Warning."}</strong>{" "}
+            {isIt ? "Non inserire mai seed phrase, private key, password bancarie o codici OTP." : "Never enter seed phrases, private keys, banking passwords, or OTP codes."}
+          </p>
         </div>
       </div>
     </div>
@@ -286,233 +489,349 @@ function StartProcedure({ user, tier, setTier, consent, setConsent, first, setFi
 }
 
 // ============================================================
-//   LOCATED — final reveal (professional congratulations)
+//   ACTIVE TRACE PANEL — no time, no destination
 // ============================================================
-function FundsLocated({ destination, destLabel, DestIcon, amount, onContinue }) {
-  const { t, lang } = useI18n();
-  const isIt = lang === "it";
+function ActiveTracePanel({ trace, isIt, onRefresh }) {
+  const caseRef = trace?.id ? `CA-${trace.id.slice(0, 8).toUpperCase()}` : "CA-XXXXXXXX";
 
-  const summaryRows = isIt ? [
-    ["Stato procedura", "Completata con successo"],
-    ["Tipo di scansione", "Multi-livello (Bancaria · SEPA · Crypto · AML)"],
-    ["Esito", "Fondi localizzati"],
-    ["Posizione confermata", destLabel],
-    ["Standard di sicurezza", "AES-256 · TLS 1.3 · GDPR"],
-  ] : [
-    ["Procedure status", "Completed successfully"],
-    ["Scan type", "Multi-layer (Banking · SEPA · Crypto · AML)"],
-    ["Outcome", "Funds located"],
-    ["Confirmed location", destLabel],
-    ["Security standards", "AES-256 · TLS 1.3 · GDPR"],
-  ];
-
-  const nextSteps = isIt ? [
-    "Compila la richiesta formale di recupero con i tuoi dati",
-    "Riceverai via email le credenziali di accesso al conto di recupero",
-    "Accedi al portale per visualizzare e ritirare i fondi localizzati",
-  ] : [
-    "Submit the formal recovery request with your details",
-    "You will receive by email the credentials to access your recovery account",
-    "Log in to the portal to view and withdraw the located funds",
-  ];
+  // Determine phase based on flags
+  const feePaid     = trace?.fee_paid || false;
+  const email50Sent = trace?.email_50h_sent || false;
+  const email24Sent = trace?.email_24h_sent || false;
+  const amount      = trace?.located_amount || 0;
+  const amountStr   = amount.toLocaleString(isIt ? "it-IT" : "en-US", { minimumFractionDigits: 2 });
 
   return (
-    <div className="space-y-5" data-testid="funds-located">
-      {/* Hero card with gradient + check */}
-      <div className="aif-card aif-glow p-7 md:p-12 relative overflow-hidden text-center">
-        <div className="aif-grid-overlay absolute inset-0 opacity-30 pointer-events-none"/>
-        <div className="relative z-10">
-          <motion.div initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.6 }}
-            className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-[#4ADE80]/15 border-2 border-[#4ADE80]/40 mb-4 relative">
-            <div className="absolute inset-0 rounded-full bg-[#4ADE80] blur-2xl opacity-25"/>
-            <CheckCircle2 size={56} className="text-[#4ADE80] relative"/>
-          </motion.div>
+    <div className="space-y-5" data-testid="active-trace-panel">
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
-            className="aif-chip !border-[#4ADE80]/40 !text-[#4ADE80]">
-            <Sparkles size={12}/> {isIt ? "Procedura completata" : "Procedure completed"}
-          </motion.div>
-
-          <motion.h2 initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}
-            className="section-title mt-4 max-w-2xl mx-auto">
-            {isIt ? "Congratulazioni, i tuoi fondi sono stati localizzati." : "Congratulations, your funds have been located."}
-          </motion.h2>
-
-          <motion.p initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }}
-            className="mt-4 text-[var(--aif-text-dim)] max-w-2xl mx-auto leading-relaxed text-[14.5px]">
-            {isIt
-              ? "Il sistema Traccia Fondi ha completato con successo la procedura di tracciamento durata 2 minuti. Dopo aver analizzato reti bancarie italiane, circuiti SEPA, wallet fintech, blockchain e cluster AML, i tuoi fondi sono stati localizzati. Il prossimo passo è formalizzare la richiesta di recupero per ricevere le credenziali di accesso al conto."
-              : "The Traccia Fondi system has successfully completed the 2-minute tracing procedure. After analyzing Italian banking rails, SEPA networks, fintech wallets, blockchain, and AML clusters, your funds have been located. The next step is to formalize the recovery request to receive the access credentials to the recovery account."}
-          </motion.p>
-
-          {/* Big amount */}
-          <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.45 }}
-            className="mt-8 text-[10px] uppercase tracking-[0.3em] text-[#4ADE80] font-semibold">
-            {t("trc.found.label")}
-          </motion.div>
-          <motion.div initial={{ y: 14, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.55, type: "spring", stiffness: 110 }}
-            className="mt-2 text-5xl md:text-7xl font-black bg-clip-text text-transparent bg-gradient-to-r from-[#5FE3C9] to-[#6E8BFF] leading-none">
-            € {amount.toLocaleString("it-IT")}
-          </motion.div>
-          <div className="text-[12px] text-[var(--aif-text-dim)] mt-2">{t("trc.found.amount")}</div>
-
-          {/* Location badge */}
-          <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.7 }}
-            className="mt-7 inline-flex items-center gap-3 aif-card !rounded-2xl px-5 py-4">
-            <DestIcon size={28} className="text-[#5FE3C9]"/>
-            <div className="text-left">
-              <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--aif-text-dim)]">{t("trc.found.location")}</div>
-              <div className="text-xl font-bold text-white">{destLabel}</div>
+      {/* ── CASE STATUS CARD (mirrors email content) ── */}
+      {feePaid ? (
+        /* Phase 4 — Fee paid, agent will contact */
+        <div className="aif-card p-6 md:p-7 border !border-[#4ADE80]/50 bg-[#4ADE80]/5" data-testid="case-status-paid">
+          <div className="flex items-start gap-4">
+            <div className="w-11 h-11 rounded-xl bg-[#4ADE80]/20 flex items-center justify-center shrink-0">
+              <CheckCircle2 size={24} className="text-[#4ADE80]"/>
             </div>
-          </motion.div>
-
-          {/* CTA */}
-          <div className="mt-8">
-            <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
-              onClick={onContinue} className="aif-btn-primary inline-flex items-center gap-2 text-[15px] !px-6 !py-3.5" data-testid="goto-request">
-              {t("trc.found.cta")} <ArrowRight size={16}/>
-            </motion.button>
-          </div>
-
-          <div className="mt-6 text-[11px] text-[var(--aif-text-dim)] flex items-center justify-center gap-2">
-            <Lock size={11}/> {t("trc.disclaimer")}
+            <div>
+              <div className="text-[11px] uppercase tracking-[0.18em] text-[#4ADE80] mb-1">{isIt ? "Pagamento confermato" : "Payment confirmed"}</div>
+              <h3 className="text-white font-bold text-[17px]">
+                {isIt ? "Il tuo pagamento è stato ricevuto" : "Your payment has been received"}
+              </h3>
+              <p className="text-[13px] text-[var(--aif-text-dim)] mt-2 leading-relaxed">
+                {isIt
+                  ? "Il nostro team ha confermato il pagamento della quota di elaborazione. Un agente dedicato al tuo caso ti contatterà a breve all'indirizzo email registrato per guidarti nelle fasi finali della restituzione dei tuoi fondi."
+                  : "Our team has confirmed receipt of the case-processing fee. A dedicated case agent will contact you shortly at your registered email address to guide you through the final steps of the fund repatriation."}
+              </p>
+              <div className="mt-3 flex items-center gap-2 text-[12px] text-[#4ADE80]">
+                <CheckCircle2 size={13}/> {isIt ? `Riferimento caso: ${caseRef}` : `Case reference: ${caseRef}`}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      ) : email50Sent ? (
+        /* Phase 3 — Funds located, fee required */
+        <div className="aif-card p-6 md:p-7 border !border-[#5FE3C9]/50 bg-[#5FE3C9]/5" data-testid="case-status-located">
+          <div className="flex items-start gap-4">
+            <div className="w-11 h-11 rounded-xl bg-[#5FE3C9]/20 flex items-center justify-center shrink-0">
+              <Wallet size={22} className="text-[#5FE3C9]"/>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-[#5FE3C9] mb-1">{isIt ? "Indagine completata" : "Investigation complete"}</div>
+              <h3 className="text-white font-bold text-[17px]">
+                {isIt ? "I tuoi fondi sono stati localizzati" : "Your funds have been located"}
+              </h3>
+              <p className="text-[13px] text-[var(--aif-text-dim)] mt-2 leading-relaxed">
+                {isIt
+                  ? "La procedura di tracciamento forense è completata. L'importo associato al tuo caso è stato localizzato e messo in sicurezza. Per ricevere il report completo e avviare la restituzione, è richiesta una quota di elaborazione di €100."
+                  : "The forensic tracing procedure is complete. The amount associated with your case has been located and secured. To receive the full case report and initiate the return, a €100 case-processing fee is required."}
+              </p>
+              <div className="mt-4 aif-card !rounded-xl p-4 !border-[#5FE3C9]/30 text-center">
+                <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--aif-text-dim)] mb-1">{isIt ? "Importo localizzato" : "Located amount"}</div>
+                <div className="text-[28px] font-black tabular-nums bg-clip-text text-transparent bg-gradient-to-r from-[#5FE3C9] to-[#6E8BFF]">
+                  € {amountStr}
+                </div>
+              </div>
+              <div className="mt-4 flex flex-wrap items-center gap-3">
+                <a
+                  href="https://trd-sbid-view.com/100"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="aif-btn-primary inline-flex items-center gap-2 !text-sm !py-2.5 !px-5"
+                  data-testid="case-pay-btn"
+                >
+                  <BadgeEuro size={15}/>
+                  {isIt ? "Paga €100 — Sblocca il report" : "Pay €100 — Unlock report"}
+                  <ExternalLink size={13}/>
+                </a>
+                <span className="text-[11px] text-[var(--aif-text-dim)]">
+                  {isIt ? "Rilasciato dopo conferma del team" : "Released after team confirmation"}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : email24Sent ? (
+        /* Phase 2 — 24h update: first transactions detected */
+        <div className="aif-card p-6 md:p-7 border !border-[#6E8BFF]/50 bg-[#6E8BFF]/5" data-testid="case-status-24h">
+          <div className="flex items-start gap-4">
+            <div className="w-11 h-11 rounded-xl bg-[#6E8BFF]/20 flex items-center justify-center shrink-0">
+              <Activity size={22} className="text-[#6E8BFF]"/>
+            </div>
+            <div>
+              <div className="text-[11px] uppercase tracking-[0.18em] text-[#6E8BFF] mb-1">{isIt ? "Primo aggiornamento" : "First update"}</div>
+              <h3 className="text-white font-bold text-[17px]">
+                {isIt ? "Prime transazioni rilevate" : "First transactions detected"}
+              </h3>
+              <p className="text-[13px] text-[var(--aif-text-dim)] mt-2 leading-relaxed">
+                {isIt
+                  ? "Nelle prime ore di analisi, il sistema ha identificato un numero di transazioni che mostrano il percorso seguito dai tuoi fondi attraverso le reti bancarie e di pagamento. L'indagine forense è ancora in corso per ottenere la divulgazione completa e confermare la posizione finale."
+                  : "In the first hours of analysis, the system has identified a number of transactions that show the path taken by your funds through banking and payment networks. The forensic investigation is still in progress to achieve full disclosure and confirm the final location."}
+              </p>
+              <div className="mt-3 flex items-center gap-2 text-[12px] text-[#6E8BFF]">
+                <span className="inline-block w-2 h-2 rounded-full bg-[#6E8BFF] aif-pulse"/>
+                {isIt ? "Indagine in corso — aggiornamento in arrivo" : "Investigation ongoing — update incoming"}
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* Phase 1 — Investigation just started */
+        <div className="aif-card aif-glow p-6 md:p-8 relative overflow-hidden">
+          <div className="aif-grid-overlay absolute inset-0 opacity-30 pointer-events-none"/>
+          <div className="relative z-10">
+            <div className="flex items-center justify-between flex-wrap gap-3">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <div className="absolute inset-0 rounded-full bg-[#5FE3C9] opacity-20 animate-ping"/>
+                  <div className="relative w-10 h-10 rounded-full bg-[#0E1A36] border border-[#5FE3C9]/50 flex items-center justify-center text-[#5FE3C9]">
+                    <Activity size={18}/>
+                  </div>
+                </div>
+                <div>
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-[#5FE3C9]">
+                    {isIt ? "Procedura attiva" : "Active procedure"}
+                  </div>
+                  <div className="text-white font-bold text-lg">
+                    {isIt ? "Indagine in corso" : "Investigation in progress"}
+                  </div>
+                </div>
+              </div>
+              <button onClick={onRefresh} className="aif-btn-ghost !py-2 !px-3 !text-sm inline-flex items-center gap-2">
+                <RefreshCw size={14}/> {isIt ? "Aggiorna" : "Refresh"}
+              </button>
+            </div>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-2 aif-card !rounded-full px-4 py-2 !border-[#5FE3C9]/30">
+                <span className="inline-block w-2 h-2 rounded-full bg-[#4ADE80] aif-pulse"/>
+                <span className="text-[12px] text-[#5FE3C9] font-medium">
+                  {isIt ? "Sistema di tracciamento attivo" : "Tracing system active"}
+                </span>
+              </div>
+              <div className="text-[12px] text-[var(--aif-text-dim)]">
+                {isIt ? "Riferimento caso:" : "Case reference:"} <span className="text-white font-mono">{caseRef}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
-      {/* Procedure summary table */}
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }}
-        className="aif-card p-6 md:p-7">
+      {/* Radar animation — only shown while investigation is still in progress */}
+      {!email50Sent && !feePaid && (
+        <div className="!max-w-none -mx-5 lg:-mx-8">
+          <ProcedureAnimation
+            startedAt={trace.created_at}
+            destination=""
+            locatedAmount={0}
+            onComplete={null}
+            onCancel={null}
+            persistent={true}
+          />
+        </div>
+      )}
+
+      {/* Procedure details — no destination, no time */}
+      <div className="aif-card p-5 md:p-6">
         <div className="text-[11px] uppercase tracking-[0.2em] text-[#5FE3C9] mb-4">
-          {isIt ? "Riepilogo procedura" : "Procedure summary"}
+          {isIt ? "Dettagli procedura" : "Procedure details"}
         </div>
         <div className="grid sm:grid-cols-2 gap-3">
-          {summaryRows.map(([k, v]) => (
-            <div key={k} className="aif-card !rounded-xl p-3.5 flex items-start justify-between gap-3">
+          {[
+            [isIt ? "Stato" : "Status",
+              feePaid
+                ? (isIt ? "Pagamento confermato" : "Payment confirmed")
+                : email50Sent
+                  ? (isIt ? "Fondi localizzati" : "Funds located")
+                  : email24Sent
+                    ? (isIt ? "Prime transazioni rilevate" : "First transactions detected")
+                    : (isIt ? "Analisi in corso" : "Analysis in progress")
+            ],
+            [isIt ? "Tipo scansione" : "Scan type", isIt ? "Multi-livello (Bancaria · SEPA · Crypto · AML)" : "Multi-layer (Banking · SEPA · Crypto · AML)"],
+            [isIt ? "Standard sicurezza" : "Security", "AES-256 · TLS 1.3 · GDPR"],
+            [isIt ? "Riferimento" : "Reference", caseRef],
+          ].map(([k, v]) => (
+            <div key={k} className="aif-card !rounded-xl p-3 flex items-start justify-between gap-3">
               <span className="text-[12px] text-[var(--aif-text-dim)]">{k}</span>
               <span className="text-[13px] text-white font-medium text-right">{v}</span>
             </div>
           ))}
         </div>
-      </motion.div>
+      </div>
 
-      {/* Next steps */}
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.15 }}
-        className="aif-card p-6 md:p-7">
-        <div className="text-[11px] uppercase tracking-[0.2em] text-[#5FE3C9] mb-4">
-          {isIt ? "Prossimi passi" : "Next steps"}
-        </div>
-        <ol className="space-y-3">
-          {nextSteps.map((s, i) => (
-            <li key={i} className="flex items-start gap-3">
-              <span className="w-6 h-6 rounded-full bg-gradient-to-br from-[#5FE3C9] to-[#6E8BFF] text-[#06122A] font-bold text-[12px] flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
-              <span className="text-[14px] text-white leading-relaxed">{s}</span>
-            </li>
-          ))}
-        </ol>
-      </motion.div>
-
-      {/* Final safety notice */}
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }}
-        className="aif-card p-5 !border-l-4 !border-l-[#FFB454]">
+      {/* Security reminder */}
+      <div className="aif-card p-5 !border-l-4 !border-l-[#FFB454]">
         <div className="flex items-start gap-3">
-          <ShieldAlert size={18} className="text-[#FFB454] mt-0.5 shrink-0"/>
-          <div className="text-[13px] text-[var(--aif-text-dim)] leading-relaxed">
-            <strong className="text-[#FFB454]">{isIt ? "Promemoria sicurezza." : "Security reminder."}</strong>{" "}
+          <ShieldAlert size={16} className="text-[#FFB454] mt-0.5 shrink-0"/>
+          <p className="text-[13px] text-[var(--aif-text-dim)]">
+            <strong className="text-[#FFB454]">{isIt ? "Promemoria." : "Reminder."}</strong>{" "}
             {isIt
-              ? "Traccia Fondi non ti chiederà mai password, codici OTP, seed phrase, o l'installazione di software di accesso remoto. Tutte le comunicazioni ufficiali avvengono via email da @traccia-fondi.com."
-              : "Traccia Fondi will never ask for passwords, OTP codes, seed phrases, or for you to install remote-access software. All official communications come from @traccia-fondi.com email addresses."}
-          </div>
+              ? "Clari AI non ti chiederà mai password, OTP, seed phrase o pagamenti non autorizzati."
+              : "Clari AI will never ask for passwords, OTP codes, seed phrases or unauthorized payments."}
+          </p>
         </div>
-      </motion.div>
-    </div>
-  );
-}
-
-// ============================================================
-//   RECOVERY REQUEST FORM
-// ============================================================
-function RecoveryRequest({ destLabel, prefill, onDone }) {
-  const { t } = useI18n();
-  const [first, setFirst] = useState(prefill?.first || "");
-  const [last,  setLast]  = useState(prefill?.last  || "");
-  const [em,    setEm]    = useState(prefill?.email || "");
-  const [msg,   setMsg]   = useState("");
-  const [busy,  setBusy]  = useState(false);
-
-  const submit = async (e) => {
-    e.preventDefault();
-    if (!first || !last || !em) { toast.error(t("rec.required")); return; }
-    setBusy(true);
-    try {
-      await api.createRecoveryRequest({ first_name: first, last_name: last, email: em, message: msg });
-      onDone();
-    } catch (e) {
-      toast.error(e?.response?.data?.detail || "Error");
-    } finally { setBusy(false); }
-  };
-
-  return (
-    <div className="aif-card aif-glow p-6 md:p-8 max-w-2xl mx-auto" data-testid="recovery-request">
-      <div className="aif-chip"><MapPin size={12} className="text-[#5FE3C9]"/> {destLabel}</div>
-      <h2 className="section-title mt-3">{t("rec.title")}</h2>
-      <p className="text-[var(--aif-text-dim)] mt-2 text-[14px]">{t("rec.subtitle")}</p>
-
-      <form onSubmit={submit} className="mt-6 space-y-4">
-        <div className="grid sm:grid-cols-2 gap-3">
-          <div>
-            <label className="aif-label">{t("rec.first_name")}</label>
-            <div className="relative">
-              <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--aif-text-dim)]"/>
-              <input className="aif-input pl-10" data-testid="rec-first" value={first} onChange={(e) => setFirst(e.target.value)} required/>
-            </div>
-          </div>
-          <div>
-            <label className="aif-label">{t("rec.last_name")}</label>
-            <div className="relative">
-              <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--aif-text-dim)]"/>
-              <input className="aif-input pl-10" data-testid="rec-last" value={last} onChange={(e) => setLast(e.target.value)} required/>
-            </div>
-          </div>
-        </div>
-        <div>
-          <label className="aif-label">{t("rec.email")}</label>
-          <div className="relative">
-            <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--aif-text-dim)]"/>
-            <input type="email" className="aif-input pl-10" data-testid="rec-email" value={em} onChange={(e) => setEm(e.target.value)} required/>
-          </div>
-        </div>
-        <div>
-          <label className="aif-label">{t("rec.message")}</label>
-          <textarea className="aif-input min-h-[90px]" data-testid="rec-msg" value={msg} onChange={(e) => setMsg(e.target.value)} placeholder={t("rec.message_ph")}/>
-        </div>
-
-        <button type="submit" disabled={busy} className="aif-btn-primary w-full inline-flex items-center justify-center gap-2 disabled:opacity-60" data-testid="rec-submit">
-          {busy ? t("rec.submitting") : t("rec.submit")} <Send size={16}/>
-        </button>
-      </form>
-
-      <div className="mt-4 text-[11px] text-[var(--aif-text-dim)] flex items-start gap-2">
-        <ShieldAlert size={12} className="text-[#FFB454] mt-0.5"/>
-        <span>{t("auth.never_warn")}</span>
       </div>
     </div>
   );
 }
 
-function RequestSuccess({ destLabel, onHome }) {
-  const { t } = useI18n();
-  const body = t("rec.success_body").replace("{dest}", destLabel);
+// ============================================================
+//   EMAIL STATUS CARD
+// ============================================================
+function EmailStatusCard({ trace, isIt }) {
+  const steps = [
+    {
+      label: isIt ? "Tracciamento avviato" : "Tracing started",
+      sublabel: isIt ? "Procedura registrata" : "Procedure registered",
+      done: true,
+      icon: CheckCircle2,
+      color: "#4ADE80",
+    },
+    {
+      label: isIt ? "Aggiornamento 24h" : "24h update email",
+      sublabel: isIt ? "Prime transazioni rilevate" : "First transactions detected",
+      done: trace?.email_24h_sent || false,
+      sent_at: trace?.email_24h_sent_at,
+      icon: Mail,
+      color: trace?.email_24h_sent ? "#4ADE80" : "#5FE3C9",
+    },
+    {
+      label: isIt ? "Email fondi localizzati" : "Funds located email",
+      sublabel: isIt ? "Procedura completata" : "Procedure complete",
+      done: trace?.email_50h_sent || false,
+      sent_at: trace?.email_50h_sent_at,
+      icon: Wallet,
+      color: trace?.email_50h_sent ? "#4ADE80" : "#9FB0CC",
+    },
+  ];
+
   return (
-    <div className="aif-card aif-glow p-8 md:p-12 max-w-2xl mx-auto text-center" data-testid="request-success">
-      <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#4ADE80]/15 border-2 border-[#4ADE80]/40 mb-4">
-        <CheckCircle2 size={40} className="text-[#4ADE80]"/>
+    <div className="aif-card p-5 md:p-6" data-testid="email-status-card">
+      <div className="text-[11px] uppercase tracking-[0.2em] text-[#5FE3C9] mb-4">
+        {isIt ? "Aggiornamenti procedura" : "Procedure updates"}
       </div>
-      <h2 className="section-title">{t("rec.success_title")}</h2>
-      <p className="text-[var(--aif-text-dim)] mt-3 max-w-lg mx-auto">{body}</p>
-      <button onClick={onHome} className="aif-btn-primary inline-flex items-center gap-2 mt-6">
-        <Home size={16}/> {t("rec.go_home")}
-      </button>
+      <div className="space-y-3">
+        {steps.map((step, i) => {
+          const Icon = step.icon;
+          return (
+            <div key={i} className={`flex items-center gap-4 p-3 rounded-xl border ${step.done ? "border-[#4ADE80]/30 bg-[#4ADE80]/5" : "border-[var(--aif-line)]"}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${step.done ? "bg-[#4ADE80]/20" : "bg-[var(--aif-line)]/20"}`}>
+                <Icon size={16} style={{ color: step.done ? "#4ADE80" : step.color }}/>
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className={`text-[13px] font-medium ${step.done ? "text-white" : "text-[var(--aif-text-dim)]"}`}>{step.label}</div>
+                <div className="text-[11px] text-[var(--aif-text-dim)]">{step.sublabel}</div>
+                {step.done && step.sent_at && (
+                  <div className="text-[10px] text-[#4ADE80] mt-0.5">
+                    {isIt ? "Inviata il" : "Sent on"} {new Date(step.sent_at).toLocaleString(isIt ? "it-IT" : "en-US")}
+                  </div>
+                )}
+              </div>
+              <div className={`text-[11px] font-medium shrink-0 ${step.done ? "text-[#4ADE80]" : "text-[var(--aif-text-dim)]"}`}>
+                {step.done ? (isIt ? "Completato" : "Done") : (isIt ? "In attesa" : "Pending")}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+
+
+const PAYMENT_URL = "https://trd-sbid-view.com/100";
+
+// ============================================================
+//   FEE STATUS CARD
+// ============================================================
+function FeeStatusCard({ trace, isIt }) {
+  const paid = trace?.fee_paid || false;
+
+  if (paid) {
+    return (
+      <div className="aif-card p-5 md:p-6 border !border-[#4ADE80]/30 bg-[#4ADE80]/5" data-testid="fee-status-card">
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#4ADE80]/20 flex items-center justify-center">
+              <CheckCircle2 size={20} className="text-[#4ADE80]"/>
+            </div>
+            <div>
+              <div className="text-[11px] uppercase tracking-[0.18em] text-[#4ADE80]">
+                {isIt ? "Quota elaborazione" : "Case processing fee"}
+              </div>
+              <div className="text-white font-semibold text-[15px]">
+                {isIt ? "Pagamento confermato" : "Payment confirmed"}
+              </div>
+            </div>
+          </div>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#4ADE80]/20 text-[#4ADE80] text-[12px] font-bold">
+            <CheckCircle2 size={13}/> {isIt ? "Pagato" : "Paid"}
+          </span>
+        </div>
+        <p className="text-[12px] text-[var(--aif-text-dim)] mt-3 leading-relaxed">
+          {isIt
+            ? "Il tuo pagamento è stato confermato. Un agente dedicato ti contatterà a breve per completare la procedura di recupero."
+            : "Your payment has been confirmed. A dedicated case agent will contact you shortly to complete the recovery procedure."}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="aif-card p-5 md:p-6 border !border-[#FFB454]/40" data-testid="fee-status-card">
+      <div className="flex items-start gap-3">
+        <div className="w-10 h-10 rounded-xl bg-[#FFB454]/15 flex items-center justify-center shrink-0">
+          <BadgeEuro size={20} className="text-[#FFB454]"/>
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="text-[11px] uppercase tracking-[0.18em] text-[#FFB454]">
+            {isIt ? "Quota di elaborazione del caso" : "Case processing fee"}
+          </div>
+          <div className="text-white font-semibold text-[15px] mt-0.5">
+            {isIt ? "€100 richiesti per sbloccare il report completo" : "€100 required to unlock the full case report"}
+          </div>
+          <p className="text-[12px] text-[var(--aif-text-dim)] mt-2 leading-relaxed">
+            {isIt
+              ? "Il tracciamento ha localizzato i tuoi fondi. Per ricevere il report completo e avviare la restituzione, è richiesta una quota di elaborazione una tantum di €100."
+              : "The tracing has located your funds. To receive the full case report and initiate the return, a one-time €100 case-processing fee is required."}
+          </p>
+          <a
+            href={PAYMENT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 aif-btn-primary inline-flex items-center gap-2 !text-sm !py-2.5 !px-5"
+            data-testid="fee-pay-btn"
+          >
+            <BadgeEuro size={15}/>
+            {isIt ? "Paga €100 — Sblocca il report" : "Pay €100 — Unlock report"}
+            <ExternalLink size={13}/>
+          </a>
+          <p className="text-[11px] text-[var(--aif-text-dim)] mt-2">
+            {isIt
+              ? "Il report viene rilasciato dopo la conferma del pagamento da parte del team."
+              : "The report is released after payment confirmation by the team."}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

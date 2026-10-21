@@ -142,13 +142,13 @@ export default function SecurityPage() {
               {isIt ? "Il nostro impegno" : "Our commitment"}
             </div>
             <h2 className="text-2xl font-bold text-white mt-2">
-              {isIt ? "Traccia Fondi non userà MAI queste tattiche" : "Traccia Fondi will NEVER use these tactics"}
+              {isIt ? "Clari AI non userà MAI queste tattiche" : "Clari AI will NEVER use these tactics"}
             </h2>
             <p className="text-[var(--aif-text-dim)] mt-3 leading-relaxed">
               {isIt
-                ? "Se qualcuno si presenta a tuo nome usando il marchio Traccia Fondi e ti chiede pagamenti anticipati, password, OTP, seed phrase o l'installazione di software di accesso remoto, NON è Traccia Fondi. Verifica sempre via "
-                : "If someone contacts you using the Traccia Fondi name and asks for upfront payments, passwords, OTP, seed phrases, or remote-access software, it is NOT Traccia Fondi. Always verify via "}
-              <a href="mailto:support@traccia-fondi.com" className="aif-link">support@traccia-fondi.com</a>{isIt ? "." : "."}
+                ? "Se qualcuno si presenta a tuo nome usando il marchio Clari AI e ti chiede pagamenti anticipati, password, OTP, seed phrase o l'installazione di software di accesso remoto, NON è Clari AI. Verifica sempre via "
+                : "If someone contacts you using the Clari AI name and asks for upfront payments, passwords, OTP, seed phrases, or remote-access software, it is NOT Clari AI. Always verify via "}
+              <a href="mailto:support@clari-ai.com" className="aif-link">support@clari-ai.com</a>{isIt ? "." : "."}
             </p>
           </div>
         </main>

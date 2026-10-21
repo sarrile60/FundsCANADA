@@ -60,13 +60,6 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <button
-            data-testid="lang-toggle"
-            onClick={() => setLang(lang === "it" ? "en" : "it")}
-            className="hidden sm:flex items-center gap-1.5 text-xs text-[var(--aif-text-dim)] hover:text-white transition px-2.5 py-1.5 rounded-lg border border-[var(--aif-line)]"
-          >
-            <Globe size={14} /> {lang.toUpperCase()}
-          </button>
 
           {user ? (
             <>
@@ -79,8 +72,8 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link to="/login" className="text-sm text-[var(--aif-text-dim)] hover:text-white hidden md:inline" data-testid="nav-login">{t("nav.login")}</Link>
-              <Link to="/login" className="aif-btn-primary !py-2.5 !px-4 !text-sm" data-testid="nav-start">{t("nav.start")}</Link>
+              <Link to="/login" className="aif-btn-ghost hidden md:inline-flex !py-2 !px-4 !text-sm" data-testid="nav-login">{t("nav.login")}</Link>
+              <Link to="/register" className="aif-btn-primary !py-2.5 !px-4 !text-sm" data-testid="nav-start">{t("nav.start")}</Link>
             </>
           )}
 
@@ -97,7 +90,6 @@ export default function Navbar() {
               {i.label}
             </button>
           ))}
-          <button onClick={() => setLang(lang === "it" ? "en" : "it")} className="aif-chip mt-2"><Globe size={14}/> {lang.toUpperCase()}</button>
         </div>
       )}
     </header>

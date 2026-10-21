@@ -1,18 +1,17 @@
-// LandingPage — composes all sections of the Traccia Fondi marketing page.
-import React, { useState } from "react";
+// LandingPage — composes all sections of the Clari AI marketing page.
+// Optimized for mobile: no heavy animations, reduced motion.
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
   Building2, TrendingUp, Bitcoin, CreditCard, Wallet, FileCheck2,
   ShieldAlert, ShieldCheck, Banknote, Network, AlertTriangle, ChevronDown,
-  ArrowRight, CheckCircle2, Sparkles, Lock, Eye, Layers, FileWarning, Coins
+  ArrowRight, CheckCircle2, Sparkles, Lock, Eye, Layers, FileWarning, Coins,
+  Globe, Scale, Search, Landmark, Link2, FileText, BadgeEuro
 } from "lucide-react";
 import Navbar from "./Navbar";
 import HeroNetwork from "./HeroNetwork";
 import { useI18n } from "../i18n";
 import Footer from "./Footer";
-
-const FADE_UP = { hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0 } };
 
 function Section({ id, children, className = "" }) {
   return <section id={id} className={`relative max-w-7xl mx-auto px-5 lg:px-8 ${className}`}>{children}</section>;
@@ -24,42 +23,46 @@ function SmallTag({ children, icon: Icon = Sparkles }) {
 
 function Hero() {
   const { t } = useI18n();
+  const [loaded, setLoaded] = useState(false);
+  
+  useEffect(() => {
+    // Simple fade-in on mount, no re-triggers
+    const timer = setTimeout(() => setLoaded(true), 50);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <Section id="hero" className="pt-12 md:pt-20 pb-16 md:pb-24">
       <div className="grid lg:grid-cols-12 gap-10 items-center">
-        <div className="lg:col-span-6">
-          <motion.div initial="hidden" animate="show" variants={FADE_UP}><SmallTag icon={Sparkles}>{t("hero.tag")}</SmallTag></motion.div>
-          <motion.h1 initial="hidden" animate="show" variants={FADE_UP} transition={{ delay: 0.05 }}
-            className="mt-5 text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.05] section-title">
+        <div className={`lg:col-span-6 transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}>
+          <SmallTag icon={Sparkles}>{t("hero.tag")}</SmallTag>
+          <h1 className="mt-5 text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.05] section-title">
             {t("hero.title")}
-          </motion.h1>
-          <motion.p initial="hidden" animate="show" variants={FADE_UP} transition={{ delay: 0.12 }}
-            className="mt-5 text-[15px] md:text-base text-[var(--aif-text-dim)] max-w-xl leading-relaxed">
+          </h1>
+          <p className="mt-5 text-[15px] md:text-base text-[var(--aif-text-dim)] max-w-xl leading-relaxed">
             {t("hero.subtitle")}
-          </motion.p>
-          <motion.div initial="hidden" animate="show" variants={FADE_UP} transition={{ delay: 0.2 }}
-            className="mt-8 flex flex-wrap gap-3">
-            <Link to="/login" className="aif-btn-primary inline-flex items-center gap-2" data-testid="hero-cta-start">
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link to="/register" className="aif-btn-primary inline-flex items-center gap-2" data-testid="hero-cta-start">
               {t("hero.cta1")} <ArrowRight size={16}/>
             </Link>
             <a href="#how" className="aif-btn-ghost inline-flex items-center gap-2" data-testid="hero-cta-how">
               {t("hero.cta2")}
             </a>
-          </motion.div>
+          </div>
           <p className="mt-4 text-[12px] text-[var(--aif-text-dim)] max-w-md">{t("hero.disclaimer")}</p>
 
           <div className="mt-8 grid grid-cols-3 gap-3 max-w-md">
-            <Stat label={t("hero.stat1")} value="20+"/>
-            <Stat label={t("hero.stat2")} value="9"/>
+            <Stat label={t("hero.stat1")} value="1M+"/>
+            <Stat label={t("hero.stat2")} value="500K+"/>
             <Stat label={t("hero.stat3")} value="IT / EN"/>
           </div>
         </div>
 
-        <div className="lg:col-span-6">
-          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }}
-            className="aif-card aif-glow p-3 md:p-5">
+        <div className={`lg:col-span-6 transition-opacity duration-700 delay-200 ${loaded ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="aif-card aif-glow p-3 md:p-5">
             <HeroNetwork/>
-          </motion.div>
+          </div>
         </div>
       </div>
     </Section>
@@ -101,22 +104,26 @@ function TrustWarning() {
 function FeaturedInStrip() {
   const { lang } = useI18n();
   const isIt = lang === "it";
-  // Tasteful, generic "as featured in" categories — NOT real media logos
-  // (which would be fraudulent if we don't have actual press coverage).
-  // These are abstract category badges that signal "this is a real product".
+  // International authorities and databases we connect to during tracing
   const items = [
-    { tag: "AI",       label: "Artificial Intelligence" },
-    { tag: "FinTech",  label: "Financial Technology" },
-    { tag: "EU",       label: "GDPR Compliant" },
-    { tag: "ISO 27001",label: "Security Aligned" },
-    { tag: "AML",      label: "Anti-Money Laundering" },
-    { tag: "Privacy",  label: "Privacy by Design" },
+    { tag: "BCE",       label: isIt ? "Banca Centrale Europea" : "European Central Bank" },
+    { tag: "EUROPOL",   label: isIt ? "Polizia Europea" : "European Police" },
+    { tag: "INTERPOL",  label: isIt ? "Polizia Internazionale" : "International Police" },
+    { tag: "OLAF",      label: isIt ? "Anti-Frode UE" : "EU Anti-Fraud" },
+    { tag: "S.E.V.I.F", label: isIt ? "Vigilanza Finanziaria" : "Financial Supervision" },
+    { tag: "AML",       label: isIt ? "Anti-Riciclaggio" : "Anti-Money Laundering" },
+    { tag: "SFO",       label: isIt ? "Serious Fraud Office" : "Serious Fraud Office" },
+    { tag: "FBI IC3",   label: isIt ? "Cybercrime USA" : "US Cybercrime" },
+    { tag: "BLOCKCHAIN",label: isIt ? "Analisi On-Chain" : "On-Chain Analysis" },
+    { tag: "HMRC",      label: isIt ? "Fisco UK" : "UK Tax Authority" },
+    { tag: "CONSOB",    label: isIt ? "Autorità Italia" : "Italian Authority" },
+    { tag: "ESMA",      label: isIt ? "Mercati UE" : "EU Markets" },
   ];
   return (
     <Section className="py-8 md:py-10">
       <div className="text-center">
         <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--aif-text-dim)] mb-5">
-          {isIt ? "Standard di settore allineati" : "Aligned with industry standards"}
+          {isIt ? "Database e autorità connesse durante il tracciamento" : "Databases and authorities connected during tracing"}
         </div>
       </div>
       <div className="aif-card p-5 md:p-6">
@@ -196,22 +203,41 @@ function HowItWorks() {
 }
 
 function AuthorityPath() {
-  const { t } = useI18n();
-  const cards = [
+  const { t, lang } = useI18n();
+  const isIt = lang === "it";
+  
+  // Italian authorities
+  const italianCards = [
     { icon: Building2,   color: "#5FE3C9", k: "a1" },
     { icon: ShieldCheck, color: "#6E8BFF", k: "a2" },
     { icon: ShieldAlert, color: "#FFB454", k: "a3" },
     { icon: Coins,       color: "#5FE3C9", k: "a4" },
     { icon: CreditCard,  color: "#FF6B7A", k: "a5" },
   ];
+  
+  // International authorities
+  const internationalAuthorities = [
+    { icon: Landmark, color: "#5FE3C9", name: "BCE", full: isIt ? "Banca Centrale Europea" : "European Central Bank", desc: isIt ? "Vigilanza bancaria, stabilità finanziaria, coordinamento UE" : "Banking supervision, financial stability, EU coordination" },
+    { icon: Globe, color: "#6E8BFF", name: "EUROPOL", full: isIt ? "Polizia Europea" : "European Police", desc: isIt ? "Criminalità finanziaria transfrontaliera, cybercrime, frodi online" : "Cross-border financial crime, cybercrime, online fraud" },
+    { icon: Network, color: "#FFB454", name: "INTERPOL", full: isIt ? "Polizia Internazionale" : "International Police", desc: isIt ? "Coordinamento investigativo globale, ricerca latitanti" : "Global investigative coordination, fugitive search" },
+    { icon: ShieldCheck, color: "#FF6B7A", name: "OLAF", full: isIt ? "Ufficio Anti-Frode UE" : "EU Anti-Fraud Office", desc: isIt ? "Frodi contro il bilancio UE, corruzione, riciclaggio" : "Fraud against EU budget, corruption, money laundering" },
+    { icon: Scale, color: "#5FE3C9", name: "S.E.V.I.F.", full: isIt ? "Sistema Europeo Vigilanza Finanziaria" : "European Financial Supervision", desc: isIt ? "EBA, ESMA, EIOPA - autorità di vigilanza mercati UE" : "EBA, ESMA, EIOPA - EU market supervisory authorities" },
+    { icon: Search, color: "#6E8BFF", name: "AML", full: isIt ? "Anti-Riciclaggio" : "Anti-Money Laundering", desc: isIt ? "FATF/GAFI, UIF, segnalazioni operazioni sospette" : "FATF, FIU, suspicious transaction reporting" },
+    { icon: FileText, color: "#FFB454", name: "SFO", full: "Serious Fraud Office", desc: isIt ? "Autorità UK per frodi gravi e corruzione internazionale" : "UK authority for serious fraud and international corruption" },
+    { icon: Link2, color: "#5FE3C9", name: "BLOCKCHAIN", full: isIt ? "Analisi On-Chain" : "On-Chain Analysis", desc: isIt ? "Chainalysis, Elliptic - tracciamento wallet e transazioni crypto" : "Chainalysis, Elliptic - wallet and crypto transaction tracing" },
+    { icon: Landmark, color: "#FF6B7A", name: "HMRC", full: isIt ? "Fisco UK" : "UK Tax Authority", desc: isIt ? "Her Majesty's Revenue - autorità fiscale e anti-frode UK" : "Her Majesty's Revenue - UK tax and anti-fraud authority" },
+    { icon: Globe, color: "#6E8BFF", name: "FBI IC3", full: isIt ? "Cybercrime USA" : "US Cybercrime Center", desc: isIt ? "Internet Crime Complaint Center - segnalazioni frodi online USA" : "Internet Crime Complaint Center - US online fraud reports" },
+  ];
+
   return (
     <Section id="reports" className="py-16 md:py-24">
+      {/* Italian Path */}
       <div className="mb-10">
         <SmallTag icon={FileCheck2}>{t("auth.tag")}</SmallTag>
         <h2 className="section-title mt-3">{t("auth.title")}</h2>
       </div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {cards.map((c, i) => {
+        {italianCards.map((c, i) => {
           const Icon = c.icon;
           return (
             <div key={i} className="aif-card p-6">
@@ -220,13 +246,36 @@ function AuthorityPath() {
               </div>
               <h3 className="text-white font-semibold text-lg mt-4">{t(`auth.${c.k}.t`)}</h3>
               <p className="text-[var(--aif-text-dim)] text-[13px] mt-2 leading-relaxed">{t(`auth.${c.k}.d`)}</p>
-              <Link to="/login" className="mt-4 inline-flex items-center gap-2 text-[13px] font-medium" style={{ color: c.color }}>
+              <Link to="/register" className="mt-4 inline-flex items-center gap-2 text-[13px] font-medium" style={{ color: c.color }}>
                 {t(`auth.${c.k}.b`)} <ArrowRight size={14}/>
               </Link>
             </div>
           );
         })}
       </div>
+      
+      {/* International Authorities */}
+      <div className="mt-16 mb-10">
+        <SmallTag icon={Globe}>{isIt ? "Autorità Internazionali" : "International Authorities"}</SmallTag>
+        <h2 className="section-title mt-3">{isIt ? "Connessione con database e autorità globali" : "Connected to global databases and authorities"}</h2>
+        <p className="text-[var(--aif-text-dim)] mt-3 max-w-3xl">{isIt ? "Durante il tracciamento, il sistema si interfaccia con le principali autorità finanziarie europee e internazionali per massimizzare le possibilità di recupero." : "During tracing, the system interfaces with major European and international financial authorities to maximize recovery chances."}</p>
+      </div>
+      <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-3">
+        {internationalAuthorities.map((auth, i) => {
+          const Icon = auth.icon;
+          return (
+            <div key={i} className="aif-card p-4 hover:border-[var(--aif-accent)]/40 transition-colors">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: `${auth.color}20`, border: `1px solid ${auth.color}40`, color: auth.color }}>
+                <Icon size={18}/>
+              </div>
+              <div className="font-bold text-white text-sm">{auth.name}</div>
+              <div className="text-[11px] text-[var(--aif-accent)] mt-0.5">{auth.full}</div>
+              <p className="text-[var(--aif-text-dim)] text-[11px] mt-2 leading-relaxed">{auth.desc}</p>
+            </div>
+          );
+        })}
+      </div>
+      
       <p className="mt-6 text-[12px] text-[var(--aif-text-dim)] max-w-3xl">{t("auth.disclaimer")}</p>
     </Section>
   );
@@ -248,7 +297,7 @@ function TracingTeaser() {
                 <li key={i} className="flex items-start gap-2 text-[var(--aif-text-dim)]"><CheckCircle2 size={16} className="text-[#5FE3C9] mt-0.5"/> {b}</li>
               ))}
             </ul>
-            <Link to="/login" className="aif-btn-primary inline-flex items-center gap-2 mt-6">{t("tracing.cta")} <ArrowRight size={16}/></Link>
+            <Link to="/register" className="aif-btn-primary inline-flex items-center gap-2 mt-6">{t("tracing.cta")} <ArrowRight size={16}/></Link>
           </div>
           <div className="lg:col-span-7"><HeroNetwork animate={false}/></div>
         </div>
@@ -359,7 +408,42 @@ function CtaBanner() {
           <SmallTag icon={Lock}>{t("cta.tag")}</SmallTag>
           <h3 className="section-title mt-3">{t("cta.title")}</h3>
           <p className="text-[var(--aif-text-dim)] mt-3 max-w-2xl mx-auto">{t("cta.body")}</p>
-          <Link to="/login" className="aif-btn-primary inline-flex items-center gap-2 mt-6">{t("cta.btn")} <ArrowRight size={16}/></Link>
+          <Link to="/register" className="aif-btn-primary inline-flex items-center gap-2 mt-6">{t("cta.btn")} <ArrowRight size={16}/></Link>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+function FeeDisclosure() {
+  const { t, lang } = useI18n();
+  const isIt = lang === "it";
+  return (
+    <Section id="fee" className="py-10 md:py-14">
+      <div className="aif-card p-6 md:p-8 border-l-4 !border-l-[#5FE3C9]">
+        <div className="flex items-start gap-5 flex-wrap md:flex-nowrap">
+          <div className="w-14 h-14 rounded-xl bg-[#5FE3C9]/15 border border-[#5FE3C9]/40 flex items-center justify-center text-[#5FE3C9] shrink-0">
+            <BadgeEuro size={26}/>
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="text-[11px] uppercase tracking-[0.2em] text-[#5FE3C9] mb-1">{t("fee.tag")}</div>
+            <h3 className="text-xl md:text-2xl font-bold text-white">{t("fee.title")}</h3>
+            <p className="mt-2 text-[var(--aif-text-dim)] text-[14px] leading-relaxed max-w-3xl">{t("fee.body")}</p>
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <div className="aif-card !rounded-xl px-5 py-3 inline-flex items-center gap-2">
+                <span className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-[#5FE3C9] to-[#6E8BFF]">{t("fee.amount")}</span>
+                <span className="text-[12px] text-[var(--aif-text-dim)] max-w-[120px] leading-snug">{t("fee.note")}</span>
+              </div>
+              <div className="flex items-center gap-2 text-[13px] text-[var(--aif-text-dim)]">
+                <CheckCircle2 size={14} className="text-[#4ADE80]"/>
+                {isIt ? "Nessun costo anticipato fino all'esito confermato" : "No upfront cost until outcome is confirmed"}
+              </div>
+              <div className="flex items-center gap-2 text-[13px] text-[var(--aif-text-dim)]">
+                <CheckCircle2 size={14} className="text-[#4ADE80]"/>
+                {isIt ? "Pagamento sicuro online" : "Secure online payment"}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </Section>
@@ -374,6 +458,7 @@ export default function LandingPage() {
         <Navbar/>
         <Hero/>
         <TrustWarning/>
+        <FeeDisclosure/>
         <FeaturedInStrip/>
         <ItalianContext/>
         <HowItWorks/>

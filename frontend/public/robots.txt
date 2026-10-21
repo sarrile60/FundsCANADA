@@ -1,4 +1,4 @@
-# robots.txt — Traccia Fondi
+# robots.txt — Clari AI
 # Allow all major search engines to index the public site.
 
 User-agent: *
@@ -20,4 +20,4 @@ Disallow: /app
 Disallow: /admin
 
 # Sitemap location
-Sitemap: https://traccia-fondi.com/sitemap.xml
+Sitemap: https://clari-ai.com/sitemap.xml

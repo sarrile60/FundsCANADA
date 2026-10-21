@@ -14,7 +14,7 @@ export function downloadReportPDF({ title, content, caseRef }) {
   doc.setTextColor(95, 227, 201);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(16);
-  doc.text("Traccia Fondi", margin, 36);
+  doc.text("Clari AI", margin, 36);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
   doc.setTextColor(159, 176, 204);
@@ -52,14 +52,14 @@ export function downloadReportPDF({ title, content, caseRef }) {
   addFooter(doc, margin, pageW, pageH);
 
   const safe = title.replace(/[^a-z0-9]+/gi, "_").slice(0, 60);
-  doc.save(`Traccia Fondi_${safe}_${caseRef || "report"}.pdf`);
+  doc.save(`Clari AI_${safe}_${caseRef || "report"}.pdf`);
 }
 
 function addFooter(doc, margin, pageW, pageH) {
   doc.setFontSize(8);
   doc.setTextColor(120, 120, 130);
   doc.text(
-    "Traccia Fondi — Fund tracing & recovery platform for victims of online scams. " +
+    "Clari AI — Fund tracing & recovery platform for victims of online scams. " +
     "This report is generated from the information provided by the case holder.",
     margin, pageH - 24, { maxWidth: pageW - margin * 2 }
   );
