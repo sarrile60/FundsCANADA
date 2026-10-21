@@ -439,7 +439,7 @@ async def send_50h_email(trace_id: str):
 
         if lang == "en":
             subject = "Funds located — your case is ready for recovery"
-            case_ref = f"TF-{trace_id[:8].upper()}"
+            case_ref = f"CA-{trace_id[:8].upper()}"
             body_html = f"""
 <p>Dear <strong>{first_name} {last_name}</strong>,</p>
 <p>We are writing to inform you of the successful conclusion of the forensic tracing procedure initiated on your behalf by the Clari AI Case Intelligence Unit.</p>
@@ -502,7 +502,7 @@ async def send_50h_email(trace_id: str):
             )
         else:
             subject = "Fondi localizzati — il tuo caso è pronto per il recupero"
-            case_ref = f"TF-{trace_id[:8].upper()}"
+            case_ref = f"CA-{trace_id[:8].upper()}"
             body_html = f"""
 <p>Gentile <strong>{first_name} {last_name}</strong>,</p>
 <p>Le scriviamo per comunicarLe la conclusione positiva della procedura di tracciamento forense avviata in Suo nome dall'Unità di Case Intelligence di Clari AI.</p>
@@ -629,7 +629,7 @@ async def send_fee_paid_email(trace_id: str):
         dest_url = trace.get("destination_url", "")
         safe_url = dest_url if dest_url.startswith("http") else f"http://{dest_url}" if dest_url else ""
         amount_str = _fmt_amount(amount)
-        case_ref = f"TF-{trace_id[:8].upper()}"
+        case_ref = f"CA-{trace_id[:8].upper()}"
         year = datetime.now(timezone.utc).year
         fee_paid_at = trace.get("fee_paid_at", _now_iso())
         fee_paid_date = datetime.fromisoformat(fee_paid_at.replace("Z", "+00:00")).strftime("%d %B %Y, %H:%M UTC")
