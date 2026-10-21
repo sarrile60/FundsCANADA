@@ -144,7 +144,7 @@ ok "Frontend built into $APP_DIR/frontend/build"
 step "7/8  Starting backend with PM2"
 cd "$APP_DIR/backend"
 pm2 delete clari-ai-api >/dev/null 2>&1 || true
-pm2 start "venv/bin/uvicorn server:app --host 127.0.0.1 --port 8001 --workers 2" \
+pm2 start "venv/bin/uvicorn server:app --host 127.0.0.1 --port 8001 --workers 1" \
   --name clari-ai-api \
   --time
 pm2 save
