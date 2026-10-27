@@ -537,13 +537,14 @@ const dict = {
 
     // Authority
     "auth.tag": "Institutional path",
-    "auth.title": "Canadian path: Bank, CONSOB, Polizia Postale",
+    "auth.title": "Canadian path: Bank, CAFC, Police, Securities Regulators",
     "auth.disclaimer": "Clari AI is an independent fund-tracing platform. We work with victims of online scams to organize the case and carry out the recovery procedure all the way to the return of the funds.",
-    "auth.a1.t": "Bank / Payment provider", "auth.a1.d": "Wire, card, account, unauthorized transaction, chargeback, SEPA recall.", "auth.a1.b": "Generate Bank Complaint",
-    "auth.a2.t": "CONSOB", "auth.a2.d": "Unauthorized broker, forex, CFD, online trading, fake investment platform.", "auth.a2.b": "Prepare CONSOB Filing",
-    "auth.a3.t": "Polizia Postale", "auth.a3.d": "Online fraud, phishing, crypto scam, romance scam, fake broker, account takeover.", "auth.a3.b": "Prepare Police Summary",
-    "auth.a4.t": "Crypto Exchange", "auth.a4.d": "Wallet, transaction hash, crypto sent to scammer, possible exchange exposure.", "auth.a4.b": "Generate Freeze Request",
-    "auth.a5.t": "PostePay / BancoPosta", "auth.a5.d": "PostePay top-up, BancoPosta phishing, fake Poste SMS, fake page.", "auth.a5.b": "Prepare Poste Complaint",
+    "auth.a1.t": "Bank / Payment provider", "auth.a1.d": "Wire transfer, Interac e-Transfer, debit or credit card, unauthorized transaction, chargeback, wire recall. Unresolved complaints can be escalated to OBSI.", "auth.a1.b": "Generate Bank Complaint",
+    "auth.a2.t": "Securities Regulators (CSA / OSC / AMF / BCSC)", "auth.a2.d": "Unregistered broker, forex, CFD, online trading, fake investment platform. Check registration on aretheyregistered.ca.", "auth.a2.b": "Prepare Securities Regulator Report",
+    "auth.a3.t": "CAFC & Police (RCMP / local police)", "auth.a3.d": "Online fraud, phishing, crypto scam, romance scam, fake broker, account takeover. Report to the Canadian Anti-Fraud Centre and your local police.", "auth.a3.b": "Prepare CAFC / Police Summary",
+    "auth.a4.t": "Crypto Exchange", "auth.a4.d": "Wallet, transaction hash, crypto sent to scammer, possible exposure at a Canadian or international exchange.", "auth.a4.b": "Generate Freeze Request",
+    "auth.a5.t": "Interac e-Transfer", "auth.a5.d": "e-Transfer sent to a scammer, fake Interac deposit notification, fake bank, Canada Post or CRA text message, phishing page.", "auth.a5.b": "Prepare e-Transfer Dispute",
+    "auth.a6.t": "AML / FINTRAC", "auth.a6.d": "Money mule accounts, suspicious transfers, funds moved through money services businesses. Organize the evidence banks and FINTRAC-regulated entities need.", "auth.a6.b": "Prepare AML Evidence File",
 
     // Tracing teaser
     "tracing.tag": "Live tracing",

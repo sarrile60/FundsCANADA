@@ -212,7 +212,8 @@ function AuthorityPath() {
     { icon: ShieldCheck, color: "#6E8BFF", k: "a2" },
     { icon: ShieldAlert, color: "#FFB454", k: "a3" },
     { icon: Coins,       color: "#5FE3C9", k: "a4" },
-    { icon: CreditCard,  color: "#FF6B7A", k: "a5" },
+    { icon: Banknote,    color: "#FF6B7A", k: "a5" },
+    { icon: Search,      color: "#6E8BFF", k: "a6" },
   ];
   
   // International authorities
