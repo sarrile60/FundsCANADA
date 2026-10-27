@@ -18,10 +18,10 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const TIER_LABEL = {
-  "5000_20000":   "< €20.000",
-  "20000_50000":  "€20.000 – €50.000",
-  "50000_100000": "€50.000 – €100.000",
-  "100000_plus":  "€100.000+",
+  "5000_20000":   "< $20,000",
+  "20000_50000":  "$20,000 – $50,000",
+  "50000_100000": "$50,000 – $100,000",
+  "100000_plus":  "$100,000+",
 };
 
 // Helper to get auth header
@@ -719,7 +719,7 @@ function TracesTab({ isIt }) {
     });
   };
 
-  const formatAmount = (n) => `€ ${(n || 0).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  const formatAmount = (n) => `$${(n || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
   // Client-side filter
   const filtered = traces.filter(t => {
@@ -1551,7 +1551,7 @@ function RegisteredUsersTab({ isIt }) {
     });
   };
 
-  const fmtAmount = (n) => n ? `€ ${(n).toLocaleString("it-IT", { minimumFractionDigits: 2 })}` : "—";
+  const fmtAmount = (n) => n ? `$${(n).toLocaleString("en-US", { minimumFractionDigits: 2 })}` : "—";
 
   const handleSaveUser = (updated) => {
     setUsers(prev => prev.map(u => u.id === updated.id ? { ...u, ...updated } : u));
@@ -2165,10 +2165,10 @@ function CreateUniswapModal({ user, agents, isIt, onClose, onSuccess }) {
               />
             </div>
 
-            {/* EUR + Fees */}
+            {/* USD + Fees */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="aif-label">{isIt ? "Importo EUR" : "EUR Amount"} *</label>
+                <label className="aif-label">{isIt ? "Importo USD" : "USD Amount"} *</label>
                 <input
                   type="number"
                   step="0.01"
@@ -2428,7 +2428,7 @@ function UserEditModal({ user, isIt, onClose, onSaved }) {
           {/* Located amount — only show if user has a trace */}
           {user.trace && (
             <div>
-              <label className="aif-label">{isIt ? "Importo localizzato (€) — tracciamento" : "Located amount (€) — trace"}</label>
+              <label className="aif-label">{isIt ? "Importo localizzato ($) — tracciamento" : "Located amount ($) — trace"}</label>
               <input
                 type="number"
                 step="0.01"

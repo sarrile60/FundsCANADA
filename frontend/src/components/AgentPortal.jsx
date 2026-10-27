@@ -20,15 +20,15 @@ const LANG_KEY = "agent_lang";
 const CORRECT_PIN = "8971";
 
 const TIER_LABEL = {
-  "5000_20000":   "< €20.000",
-  "20000_50000":  "€20.000 – €50.000",
-  "50000_100000": "€50.000 – €100.000",
-  "100000_plus":  "€100.000+",
+  "5000_20000":   "< $20,000",
+  "20000_50000":  "$20,000 – $50,000",
+  "50000_100000": "$50,000 – $100,000",
+  "100000_plus":  "$100,000+",
 };
 
 function fmtAmount(n) {
   if (!n) return "—";
-  return `€ ${Number(n).toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `$${Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
 function fmtDate(iso) {

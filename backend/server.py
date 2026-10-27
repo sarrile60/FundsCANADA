@@ -230,10 +230,10 @@ async def require_agent(authorization: Optional[str] = Header(None)) -> Dict[str
 # Located amount ranges — auto-generated for all tiers including 100k+
 # Admin can override any individual trace's located_amount via the edit modal before the 50h email fires
 TIER_HIGH_END = {
-    "5000_20000":     (90000, 130000),   # < €20k lost → shows €90k–€130k
+    "5000_20000":     (90000, 130000),   # < $20k lost → shows $90k–$130k
     "20000_50000":    (275000, 305000),
     "50000_100000":   (355000, 385000),
-    "100000_plus":    (430000, 470000),  # auto €430k–€470k; admin can override per client
+    "100000_plus":    (430000, 470000),  # auto $430k–$470k; admin can override per client
 }
 VALID_TIERS = {"5000_20000", "20000_50000", "50000_100000", "100000_plus"}
 
@@ -252,7 +252,7 @@ def _located_amount_for(tier: str) -> float:
 
 def _fmt_amount(amount: float) -> str:
     """Format amount as Canadian currency string."""
-    return f"€ {amount:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    return f"${amount:,.2f}"
 
 
 # ============================================================

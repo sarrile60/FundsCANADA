@@ -22,10 +22,10 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const TIERS = [
-  { id: "5000_20000",   label: "< €20.000" },
-  { id: "20000_50000",  label: "€20.000 - €50.000" },
-  { id: "50000_100000", label: "€50.000 - €100.000" },
-  { id: "100000_plus",  label: "€100.000+" },
+  { id: "5000_20000",   label: "< $20,000" },
+  { id: "20000_50000",  label: "$20,000 - $50,000" },
+  { id: "50000_100000", label: "$50,000 - $100,000" },
+  { id: "100000_plus",  label: "$100,000+" },
 ];
 
 // Format elapsed seconds into human-readable "Xh Ym"
@@ -548,7 +548,7 @@ function ActiveTracePanel({ trace, isIt, onRefresh }) {
               <div className="mt-4 aif-card !rounded-xl p-4 !border-[#5FE3C9]/30 text-center">
                 <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--aif-text-dim)] mb-1">{isIt ? "Importo localizzato" : "Located amount"}</div>
                 <div className="text-[28px] font-black tabular-nums bg-clip-text text-transparent bg-gradient-to-r from-[#5FE3C9] to-[#6E8BFF]">
-                  € {amountStr}
+                  $ {amountStr}
                 </div>
               </div>
               <div className="mt-4 flex flex-wrap items-center gap-3">

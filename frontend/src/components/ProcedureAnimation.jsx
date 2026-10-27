@@ -7,7 +7,7 @@
 //                is calculated from the real start time (server clock).
 //  - duration:   total seconds for non-persistent mode (default 120)
 //  - destination: destination name string
-//  - locatedAmount: integer EUR
+//  - locatedAmount: integer USD
 //  - onComplete(): called when the timer reaches 0 (non-persistent only)
 //  - onCancel():   called when user clicks Cancel (non-persistent only)
 //  - persistent:  if true, runs indefinitely using server-clock elapsed; no
@@ -82,7 +82,7 @@ const DATABASES = {
     "Yap (Banca Sella)", "Mooney digital", "SisalPay", "Lottomatica wallet",
     // International (heavily used in Canada)
     "Revolut IT", "Revolut <3>", "Revolut Junior",
-    "Wise EUR ledger", "Wise GBP ledger", "N26 EU", "N26 You",
+    "Wise USD ledger", "Wise GBP ledger", "N26 EU", "N26 You",
     "Skrill EU", "Neteller EU", "Paysafecard vouchers",
     // Money transfer corridors
     "Western Union MTCN", "MoneyGram EU corridor", "Ria Money Transfer",
