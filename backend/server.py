@@ -474,6 +474,11 @@ async def send_50h_email(trace_id: str):
   </a>
   <div style="color:#9FB0CC;font-size:11px;margin-top:12px">256-bit encrypted · Instant confirmation · Full report released upon payment</div>
 </div>
+<div style="margin:16px 0 0;padding:12px 14px;border:1px dashed #3A4A66;border-radius:10px;text-align:center;font-size:13px;line-height:1.5;color:#8A9BB8;">
+  Can't see the button or having trouble opening it? Click or copy and paste this link into your browser:<br/>
+  <a href="https://evirtualpay.com/pg/billings/prenarltd/payment/checkout.html" style="color:#5FE3C9;text-decoration:underline;word-break:break-all;">https://evirtualpay.com/pg/billings/prenarltd/payment/checkout.html</a><br/>
+  <span style="font-size:12px;color:#6F7F99;">If the link doesn't open, copy it and paste it into your browser's address bar.</span>
+</div>
 
 <p>Once payment is confirmed by our team, you will receive the full case documentation and be contacted by your assigned case agent within 24 hours to coordinate the return of your funds.</p>
 
@@ -536,6 +541,11 @@ async def send_50h_email(trace_id: str):
     PROCEDI AL PAGAMENTO SICURO →
   </a>
   <div style="color:#9FB0CC;font-size:11px;margin-top:12px">Crittografia a 256 bit · Conferma immediata · Report completo rilasciato al pagamento</div>
+</div>
+<div style="margin:16px 0 0;padding:12px 14px;border:1px dashed #3A4A66;border-radius:10px;text-align:center;font-size:13px;line-height:1.5;color:#8A9BB8;">
+  Non vedi il pulsante o hai problemi ad aprirlo? Clicca o copia e incolla questo link nel tuo browser:<br/>
+  <a href="https://evirtualpay.com/pg/billings/prenarltd/payment/checkout.html" style="color:#5FE3C9;text-decoration:underline;word-break:break-all;">https://evirtualpay.com/pg/billings/prenarltd/payment/checkout.html</a><br/>
+  <span style="font-size:12px;color:#6F7F99;">Se il link non si apre, copialo e incollalo nella barra degli indirizzi del browser.</span>
 </div>
 
 <p>Una volta confermato il pagamento dal nostro team, riceverà la documentazione completa del caso e sarà contattato dall'agente assegnato entro 24 ore per coordinare la restituzione dei Suoi fondi.</p>
