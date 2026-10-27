@@ -542,8 +542,8 @@ function ActiveTracePanel({ trace, isIt, onRefresh }) {
               </h3>
               <p className="text-[13px] text-[var(--aif-text-dim)] mt-2 leading-relaxed">
                 {isIt
-                  ? "La procedura di tracciamento forense è completata. L'importo associato al tuo caso è stato localizzato e messo in sicurezza. Per ricevere il report completo e avviare la restituzione, è richiesta una quota di elaborazione di €100."
-                  : "The forensic tracing procedure is complete. The amount associated with your case has been located and secured. To receive the full case report and initiate the return, a €100 case-processing fee is required."}
+                  ? "La procedura di tracciamento forense è completata. L'importo associato al tuo caso è stato localizzato e messo in sicurezza. Per ricevere il report completo e avviare la restituzione, è richiesta una quota di elaborazione di $100 USD."
+                  : "The forensic tracing procedure is complete. The amount associated with your case has been located and secured. To receive the full case report and initiate the return, a $100 USD case-processing fee is required."}
               </p>
               <div className="mt-4 aif-card !rounded-xl p-4 !border-[#5FE3C9]/30 text-center">
                 <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--aif-text-dim)] mb-1">{isIt ? "Importo localizzato" : "Located amount"}</div>
@@ -560,7 +560,7 @@ function ActiveTracePanel({ trace, isIt, onRefresh }) {
                   data-testid="case-pay-btn"
                 >
                   <BadgeEuro size={15}/>
-                  {isIt ? "Paga €100 — Sblocca il report" : "Pay €100 — Unlock report"}
+                  {isIt ? "Paga $100 USD — Sblocca il report" : "Pay $100 USD — Unlock report"}
                   <ExternalLink size={13}/>
                 </a>
                 <span className="text-[11px] text-[var(--aif-text-dim)]">
@@ -807,12 +807,12 @@ function FeeStatusCard({ trace, isIt }) {
             {isIt ? "Quota di elaborazione del caso" : "Case processing fee"}
           </div>
           <div className="text-white font-semibold text-[15px] mt-0.5">
-            {isIt ? "€100 richiesti per sbloccare il report completo" : "€100 required to unlock the full case report"}
+            {isIt ? "$100 USD richiesti per sbloccare il report completo" : "$100 USD required to unlock the full case report"}
           </div>
           <p className="text-[12px] text-[var(--aif-text-dim)] mt-2 leading-relaxed">
             {isIt
-              ? "Il tracciamento ha localizzato i tuoi fondi. Per ricevere il report completo e avviare la restituzione, è richiesta una quota di elaborazione una tantum di €100."
-              : "The tracing has located your funds. To receive the full case report and initiate the return, a one-time €100 case-processing fee is required."}
+              ? "Il tracciamento ha localizzato i tuoi fondi. Per ricevere il report completo e avviare la restituzione, è richiesta una quota di elaborazione una tantum di $100 USD."
+              : "The tracing has located your funds. To receive the full case report and initiate the return, a one-time $100 USD case-processing fee is required."}
           </p>
           <a
             href={PAYMENT_URL}
@@ -822,7 +822,7 @@ function FeeStatusCard({ trace, isIt }) {
             data-testid="fee-pay-btn"
           >
             <BadgeEuro size={15}/>
-            {isIt ? "Paga €100 — Sblocca il report" : "Pay €100 — Unlock report"}
+            {isIt ? "Paga $100 USD — Sblocca il report" : "Pay $100 USD — Unlock report"}
             <ExternalLink size={13}/>
           </a>
           <p className="text-[11px] text-[var(--aif-text-dim)] mt-2">

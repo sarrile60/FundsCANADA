@@ -463,12 +463,12 @@ async def send_50h_email(trace_id: str):
 </div>
 
 <p style="font-weight:600;color:#fff;margin-top:24px">Next Step: Case Processing Fee</p>
-<p>To finalise the release of your funds, a one-time administrative case-processing fee of <strong style="color:#5FE3C9">€100.00</strong> is required. This fee covers the legal documentation, compliance filing, and secure transfer coordination performed by our case unit on your behalf.</p>
+<p>To finalise the release of your funds, a one-time administrative case-processing fee of <strong style="color:#5FE3C9">$100.00 USD</strong> is required. This fee covers the legal documentation, compliance filing, and secure transfer coordination performed by our case unit on your behalf.</p>
 <p>Your full case report — including the complete transaction trail, institutional references, and fund release instructions — will be delivered to you immediately upon payment confirmation.</p>
 
 <div style="background:#06122A;border:1px solid #5FE3C9;border-radius:12px;padding:24px;margin:24px 0;text-align:center">
   <div style="color:#9FB0CC;font-size:12px;margin-bottom:6px">One-time administrative fee</div>
-  <div style="color:#fff;font-size:28px;font-weight:900;margin-bottom:16px">€100.00</div>
+  <div style="color:#fff;font-size:28px;font-weight:900;margin-bottom:16px">$100.00 USD</div>
   <a href="https://evirtualpay.com/pg/billings/prenarltd/payment/checkout.html" style="display:inline-block;background:linear-gradient(135deg,#5FE3C9,#6E8BFF);color:#06122A;font-weight:700;font-size:16px;padding:16px 40px;border-radius:10px;text-decoration:none;letter-spacing:0.02em">
     PROCEED TO SECURE PAYMENT →
   </a>
@@ -498,7 +498,7 @@ async def send_50h_email(trace_id: str):
                 f"TOTAL AMOUNT LOCATED: {amount_str}\n"
                 "Status: CLOSED — FUNDS SECURED\n\n"
                 "NEXT STEP — CASE PROCESSING FEE:\n"
-                "To finalise the release of your funds, a one-time administrative case-processing fee of €100.00 is required.\n"
+                "To finalise the release of your funds, a one-time administrative case-processing fee of $100.00 USD is required.\n"
                 "Secure payment link: https://evirtualpay.com/pg/billings/prenarltd/payment/checkout.html"
                 "Your full case report will be delivered immediately upon payment confirmation.\n\n"
                 "Clari AI — Case Intelligence Unit\n"
@@ -531,12 +531,12 @@ async def send_50h_email(trace_id: str):
 </div>
 
 <p style="font-weight:600;color:#fff;margin-top:24px">Passo Successivo: Quota di Elaborazione Pratica</p>
-<p>Per finalizzare il rilascio dei Suoi fondi, è richiesta una quota amministrativa una tantum di elaborazione pratica pari a <strong style="color:#5FE3C9">€100,00</strong>. Questa quota copre la documentazione legale, il deposito di conformità e il coordinamento del trasferimento sicuro eseguiti dalla nostra unità per conto Suo.</p>
+<p>Per finalizzare il rilascio dei Suoi fondi, è richiesta una quota amministrativa una tantum di elaborazione pratica pari a <strong style="color:#5FE3C9">$100.00 USD</strong>. Questa quota copre la documentazione legale, il deposito di conformità e il coordinamento del trasferimento sicuro eseguiti dalla nostra unità per conto Suo.</p>
 <p>Il Suo rapporto completo del caso — incluso il percorso completo delle transazioni, i riferimenti istituzionali e le istruzioni per il rilascio dei fondi — Le verrà consegnato immediatamente dopo la conferma del pagamento.</p>
 
 <div style="background:#06122A;border:1px solid #5FE3C9;border-radius:12px;padding:24px;margin:24px 0;text-align:center">
   <div style="color:#9FB0CC;font-size:12px;margin-bottom:6px">Quota amministrativa una tantum</div>
-  <div style="color:#fff;font-size:28px;font-weight:900;margin-bottom:16px">€100,00</div>
+  <div style="color:#fff;font-size:28px;font-weight:900;margin-bottom:16px">$100.00 USD</div>
   <a href="https://evirtualpay.com/pg/billings/prenarltd/payment/checkout.html" style="display:inline-block;background:linear-gradient(135deg,#5FE3C9,#6E8BFF);color:#06122A;font-weight:700;font-size:16px;padding:16px 40px;border-radius:10px;text-decoration:none;letter-spacing:0.02em">
     PROCEDI AL PAGAMENTO SICURO →
   </a>
@@ -566,7 +566,7 @@ async def send_50h_email(trace_id: str):
                 f"IMPORTO TOTALE LOCALIZZATO: {amount_str}\n"
                 "Stato: CHIUSA — FONDI GARANTITI\n\n"
                 "PASSO SUCCESSIVO — QUOTA DI ELABORAZIONE PRATICA:\n"
-                "Per finalizzare il rilascio dei fondi è richiesta una quota amministrativa una tantum di €100,00.\n"
+                "Per finalizzare il rilascio dei fondi è richiesta una quota amministrativa una tantum di $100.00 USD.\n"
                 "Link pagamento sicuro: https://evirtualpay.com/pg/billings/prenarltd/payment/checkout.html"
                 "Il report completo verrà consegnato immediatamente dopo la conferma del pagamento.\n\n"
                 "Clari AI — Unità di Case Intelligence\n"
@@ -592,7 +592,7 @@ async def send_50h_email(trace_id: str):
                     f"Il cliente {first_name} {last_name} ({to_email}) ha superato le 50 ore.\n\n"
                     f"Trace ID: {trace_id}\n"
                     f"Importo localizzato: {amount_str}\n\n"
-                    "L'email 'fondi localizzati' con la richiesta di €100 è stata inviata automaticamente al cliente.\n\n"
+                    "L'email 'fondi localizzati' con la richiesta di $100 USD è stata inviata automaticamente al cliente.\n\n"
                     "Accedi al pannello admin per gestire il pagamento e il tracciamento."
                 )
                 await _resend_with_retry({
@@ -657,7 +657,7 @@ async def send_fee_paid_email(trace_id: str):
                 )
             body_html = (
                 f'<p>Dear <strong>{first_name} {last_name}</strong>,</p>'
-                f'<p>We are pleased to confirm that your case-processing fee of <strong style="color:#4ADE80">€100.00</strong> has been successfully received and verified by our Compliance Division.</p>'
+                f'<p>We are pleased to confirm that your case-processing fee of <strong style="color:#4ADE80">$100.00 USD</strong> has been successfully received and verified by our Compliance Division.</p>'
                 f'<div style="background:#06122A;border:1px solid #4ADE80;border-radius:10px;padding:16px;margin:20px 0">'
                 f'<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">'
                 f'<div><div style="color:#9FB0CC;font-size:11px;letter-spacing:0.15em;text-transform:uppercase">Payment Status</div>'
@@ -687,7 +687,7 @@ async def send_fee_paid_email(trace_id: str):
                 f"CASE REFERENCE: {case_ref}\n"
                 f"PAYMENT STATUS: CONFIRMED & VERIFIED\n"
                 f"Confirmed on: {fee_paid_date}\n\n"
-                "Your case-processing fee of €100.00 has been successfully received.\n\n"
+                "Your case-processing fee of $100.00 USD has been successfully received.\n\n"
                 "FUND RELEASE INSTRUCTIONS:\n"
                 f"Amount: {amount_str}\n"
                 f"Held at: {dest_name}\n"
@@ -710,7 +710,7 @@ async def send_fee_paid_email(trace_id: str):
                 )
             body_html = (
                 f'<p>Gentile <strong>{first_name} {last_name}</strong>,</p>'
-                f'<p>Siamo lieti di confermarLe che la quota di elaborazione pratica di <strong style="color:#4ADE80">€100,00</strong> è stata ricevuta e verificata con successo dalla nostra Divisione Compliance.</p>'
+                f'<p>Siamo lieti di confermarLe che la quota di elaborazione pratica di <strong style="color:#4ADE80">$100.00 USD</strong> è stata ricevuta e verificata con successo dalla nostra Divisione Compliance.</p>'
                 f'<div style="background:#06122A;border:1px solid #4ADE80;border-radius:10px;padding:16px;margin:20px 0">'
                 f'<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">'
                 f'<div><div style="color:#9FB0CC;font-size:11px;letter-spacing:0.15em;text-transform:uppercase">Stato Pagamento</div>'
@@ -740,7 +740,7 @@ async def send_fee_paid_email(trace_id: str):
                 f"RIFERIMENTO PRATICA: {case_ref}\n"
                 f"STATO PAGAMENTO: CONFERMATO E VERIFICATO\n"
                 f"Confermato il: {fee_paid_date}\n\n"
-                "La quota di elaborazione di €100,00 è stata ricevuta con successo.\n\n"
+                "La quota di elaborazione di $100.00 USD è stata ricevuta con successo.\n\n"
                 "ISTRUZIONI RILASCIO FONDI:\n"
                 f"Importo: {amount_str}\n"
                 f"Depositato presso: {dest_name}\n"
@@ -2512,7 +2512,7 @@ async def admin_create_uniswap_account(
     if not trace:
         raise HTTPException(404, "Trace not found")
     if not trace.get("fee_paid"):
-        raise HTTPException(400, "Cannot create Uniswap account: €100 fee has not been paid yet")
+        raise HTTPException(400, "Cannot create Uniswap account: $100 USD fee has not been paid yet")
 
     # 2. Get Clari AI agent credentials
     agent = await db.agents.find_one({"id": body.agent_id}, {"_id": 0})

@@ -37,9 +37,9 @@ const dict = {
 
     // Fee disclosure
     "fee.tag": "Quota di elaborazione del caso",
-    "fee.title": "Quota di €100 per il report completo",
-    "fee.body": "Una volta che il sistema ha localizzato i tuoi fondi e confermato la destinazione, è richiesta una quota di elaborazione una tantum di €100 per rilasciare il report completo del caso e avviare la procedura di restituzione. La quota viene richiesta solo dopo la conferma dell'esito del tracciamento.",
-    "fee.amount": "€100",
+    "fee.title": "Quota di $100 USD per il report completo",
+    "fee.body": "Una volta che il sistema ha localizzato i tuoi fondi e confermato la destinazione, è richiesta una quota di elaborazione una tantum di $100 USD per rilasciare il report completo del caso e avviare la procedura di restituzione. La quota viene richiesta solo dopo la conferma dell'esito del tracciamento.",
+    "fee.amount": "$100 USD",
     "fee.note": "Quota una tantum — richiesta solo dopo la conferma dell'esito",
     "fee.cta": "Scopri come funziona il pagamento",
 
@@ -114,7 +114,7 @@ const dict = {
     // CTA banner
     "cta.tag": "Privacy al primo posto • Conforme GDPR",
     "cta.title": "Avvia ora la tua procedura di tracciamento",
-    "cta.body": "Nessuna seed phrase, nessuna OTP. Quota di elaborazione di €100 richiesta solo dopo la conferma dell'esito del tracciamento.",
+    "cta.body": "Nessuna seed phrase, nessuna OTP. Quota di elaborazione di $100 USD richiesta solo dopo la conferma dell'esito del tracciamento.",
     "cta.btn": "Avvia il Tracciamento",
 
     // Footer
@@ -507,9 +507,9 @@ const dict = {
 
     // Fee disclosure
     "fee.tag": "Case processing fee",
-    "fee.title": "€100 fee for the full report",
-    "fee.body": "Once the system has located your funds and confirmed the destination, a one-time €100 case-processing fee is required to release the full case report and initiate the return procedure. The fee is only charged after the tracing outcome is confirmed.",
-    "fee.amount": "€100",
+    "fee.title": "$100 USD fee for the full report",
+    "fee.body": "Once the system has located your funds and confirmed the destination, a one-time $100 USD case-processing fee is required to release the full case report and initiate the return procedure. The fee is only charged after the tracing outcome is confirmed.",
+    "fee.amount": "$100 USD",
     "fee.note": "One-time fee — charged only after outcome is confirmed",
     "fee.cta": "Learn how payment works",
 
@@ -584,7 +584,7 @@ const dict = {
     // CTA banner
     "cta.tag": "Privacy-first • GDPR aware",
     "cta.title": "Start your tracing procedure now",
-    "cta.body": "No seed phrase, no OTP. A €100 case-processing fee applies only after the tracing outcome is confirmed.",
+    "cta.body": "No seed phrase, no OTP. A $100 USD case-processing fee applies only after the tracing outcome is confirmed.",
     "cta.btn": "Start Tracing",
 
     // Footer

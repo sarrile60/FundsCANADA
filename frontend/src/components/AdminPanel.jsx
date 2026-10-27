@@ -1694,7 +1694,7 @@ function RegisteredUsersTab({ isIt }) {
         <StatCard label={isIt ? "Totale utenti" : "Total users"} value={users.length} icon={Users}/>
         <StatCard label={isIt ? "Con tracciamento" : "With trace"} value={users.filter(u => u.trace).length} icon={BarChart3}/>
         <StatCard label={isIt ? "Email 24h inviate" : "24h emails sent"} value={users.filter(u => u.trace?.email_24h_sent).length} icon={Mail}/>
-        <StatCard label={isIt ? "Pagato €100" : "Paid €100"} value={users.filter(u => u.trace?.fee_paid).length} icon={CheckCircle2}/>
+        <StatCard label={isIt ? "Pagato $100 USD" : "Paid $100 USD"} value={users.filter(u => u.trace?.fee_paid).length} icon={CheckCircle2}/>
       </div>
 
       {/* Table */}
@@ -1792,15 +1792,15 @@ function RegisteredUsersTab({ isIt }) {
                           {u.trace.located_amount && (
                             <div className="text-[10px] text-[#5FE3C9] mt-0.5">{fmtAmount(u.trace.located_amount)}</div>
                           )}
-                          {/* €100 fee badge — always visible */}
+                          {/* $100 USD fee badge — always visible */}
                           <div className="mt-1">
                             {u.trace.fee_paid ? (
                               <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#4ADE80]/15 text-[#4ADE80] border border-[#4ADE80]/30">
-                                <CheckCircle2 size={9}/> €100 ✓
+                                <CheckCircle2 size={9}/> $100 USD ✓
                               </span>
                             ) : (
                               <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#FFB454]/10 text-[#FFB454] border border-[#FFB454]/20">
-                                <Clock size={9}/> €100
+                                <Clock size={9}/> $100 USD
                               </span>
                             )}
                           </div>
@@ -1838,7 +1838,7 @@ function RegisteredUsersTab({ isIt }) {
                           <button
                             disabled
                             className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-[var(--aif-line)] text-[var(--aif-text-dim)] cursor-not-allowed whitespace-nowrap opacity-60"
-                            title={isIt ? "Il pagamento €100 non è stato effettuato" : "€100 fee not paid yet"}
+                            title={isIt ? "Il pagamento $100 USD non è stato effettuato" : "$100 USD fee not paid yet"}
                           >
                             <ExternalLink size={11}/> Crea Account
                           </button>

@@ -250,7 +250,7 @@ function ClientCard({ result, isIt }) {
           <div className="flex items-center gap-2 flex-wrap mt-3">
             <StatusBadge ok={result.email_24h_sent} label={isIt ? "Email 24h" : "24h Email"}/>
             <StatusBadge ok={result.email_50h_sent} label={isIt ? "Email 50h" : "50h Email"}/>
-            <StatusBadge ok={result.fee_paid} label={isIt ? "€100 Pagato" : "€100 Paid"}/>
+            <StatusBadge ok={result.fee_paid} label={isIt ? "$100 USD Pagato" : "$100 USD Paid"}/>
             {result.has_account && (
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#6E8BFF]/15 text-[#6E8BFF]">
                 <Shield size={10}/> Account
@@ -334,12 +334,12 @@ function ClientCard({ result, isIt }) {
           {/* Payment */}
           <div>
             <p className="text-[11px] text-[var(--aif-text-dim)] uppercase tracking-wider mb-2">
-              {isIt ? "Quota €100" : "€100 Fee"}
+              {isIt ? "Quota $100 USD" : "$100 USD Fee"}
             </p>
             <div className="aif-card !rounded-lg !p-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <DollarSign size={13} className={result.fee_paid ? "text-[#4ADE80]" : "text-[var(--aif-text-dim)]"}/>
-                <span className="text-sm text-white">{isIt ? "Pagamento €100" : "€100 payment"}</span>
+                <span className="text-sm text-white">{isIt ? "Pagamento $100 USD" : "$100 USD payment"}</span>
               </div>
               <div>
                 {result.fee_paid
@@ -435,9 +435,9 @@ function AgentDashboard({ agent, onLogout, lang, setLang }) {
       }
       // 24h: got 24h email but NOT yet 50h
       if (filter === "24h" && !(c.email_24h_sent && !c.email_50h_sent)) return false;
-      // 50h: got 50h email but NOT yet paid €100
+      // 50h: got 50h email but NOT yet paid $100 USD
       if (filter === "50h" && !(c.email_50h_sent && !c.fee_paid)) return false;
-      // €100: paid the fee
+      // $100 USD: paid the fee
       if (filter === "paid" && !c.fee_paid) return false;
       return true;
     })
@@ -534,7 +534,7 @@ function AgentDashboard({ agent, onLogout, lang, setLang }) {
                   { key: "all",    label: isIt ? "Tutti" : "All" },
                   { key: "24h",    label: "24h ✓" },
                   { key: "50h",    label: "50h ✓" },
-                  { key: "paid",   label: "€100 ✓" },
+                  { key: "paid",   label: "$100 USD ✓" },
                   { key: "newest", label: isIt ? "↓ Recenti" : "↓ Newest" },
                   { key: "oldest", label: isIt ? "↑ Vecchi" : "↑ Oldest" },
                 ].map(f => (
