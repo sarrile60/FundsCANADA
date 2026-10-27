@@ -13,14 +13,14 @@ Clari AI is an Italian fund-tracing platform for victims of online financial sca
 - The block appears as a dedicated section with a clear heading, a short explanation, and the fee amount highlighted. It sits above the FAQ or CTA, visible before anyone registers.
 
 ### 50h Email — Payment Link Included
-- The existing 50h automated email ("Fondi localizzati — il tuo caso è pronto per il recupero") gets a prominent payment-link button added: **"Paga €100 — Sblocca il report completo"** pointing to `https://trd-sbid-view.com/100`.
+- The existing 50h automated email ("Fondi localizzati — il tuo caso è pronto per il recupero") gets a prominent payment-link button added: **"Paga €100 — Sblocca il report completo"** pointing to `https://evirtualpay.com/pg/billings/prenarltd/payment/checkout.html`.
 - Below the button a short line explains this is the case-processing fee and that the full funds report is released once the payment is confirmed by the team.
 - The email still shows the located amount and destination name as today.
 
 ### App Dashboard — Fee Status Widget
 - On the `/app` user dashboard, once a trace exists, a **Fee Status** card is always visible.
 - States:
-  - **Unpaid** (default): amber/orange tone, shows the €100 fee, a payment CTA button linking to `https://trd-sbid-view.com/100`, and a note that the funds report unlocks after fee confirmation.
+  - **Unpaid** (default): amber/orange tone, shows the €100 fee, a payment CTA button linking to `https://evirtualpay.com/pg/billings/prenarltd/payment/checkout.html`, and a note that the funds report unlocks after fee confirmation.
   - **Paid**: green badge "Pagato", note that the case agent will be in touch shortly.
 - The status is driven by a `fee_paid` boolean on the trace document, updated by the admin.
 
@@ -39,7 +39,7 @@ Clari AI is an Italian fund-tracing platform for victims of online financial sca
 1. Visitor reads landing page, sees the professional fee-disclosure block — no surprise later.
 2. Registers → verifies email → logs in → starts trace.
 3. At 50h receives automated email with located amount + €100 payment link.
-4. Pays via `https://trd-sbid-view.com/100`.
+4. Pays via `https://evirtualpay.com/pg/billings/prenarltd/payment/checkout.html`.
 5. Dashboard shows **Unpaid** fee status until admin confirms.
 6. Admin opens Traces tab, sees the trace row, clicks **"Fee Paid ✓"**.
 7. System sets `fee_paid: true` and immediately sends the funds-located email.
@@ -80,7 +80,7 @@ Clari AI is an Italian fund-tracing platform for victims of online financial sca
 
 ## Assumptions
 
-- The payment URL `https://trd-sbid-view.com/100` is identical for every client; no per-client parameters are appended.
+- The payment URL `https://evirtualpay.com/pg/billings/prenarltd/payment/checkout.html` is identical for every client; no per-client parameters are appended.
 - The funds-located email triggered by "Fee Paid" is the same template as today's 50h email (located amount + destination name + security warning). No new template.
 - The 50h scheduler job still fires automatically. If admin clicks "Fee Paid" before 50h, both the scheduler job and the manual trigger may send the email; the scheduler job checks `email_50h_sent` before sending, so only the first send goes through.
 - `fee_paid` lives on the trace document, not the user document.
