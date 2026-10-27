@@ -31,15 +31,15 @@ const STAGES = [
   { key: "locating",      icon: FileSearch,    from: 0.94, to: 1.00, labelKey: "trc.s.locating" },
 ];
 
-// --- Italian-context databases per stage ---
+// --- Canadian-context databases per stage ---
 // These names reflect institutions, fintech apps, exchanges, and warned
-// platforms that Italian victims of online financial scams actually
+// platforms that Canadian victims of online financial scams actually
 // recognize — making the procedure feel real and locally relevant.
 const DATABASES = {
   italian_banks: [
     // Top retail banks
     "Intesa Sanpaolo", "UniCredit", "Banco BPM", "BPER Banca",
-    "Monte dei Paschi di Siena", "Credit Agricole Italia", "BNL — BNP Paribas",
+    "Monte dei Paschi di Siena", "Credit Agricole Canada", "BNL — BNP Paribas",
     "Banca Mediolanum", "Banca Generali", "Banca Sella", "Fineco Bank",
     "Banca Popolare di Sondrio", "Banca Popolare dell'Emilia Romagna",
     "Credem", "Banca Carige", "Cariparma", "Banca Popolare di Bari",
@@ -49,13 +49,13 @@ const DATABASES = {
     // Online & mobile-first
     "Hype (Banca Sella)", "Webank (Banco BPM)", "Buddybank (UniCredit)",
     "Illimity Bank", "Banca Progetto", "Aidexa", "Flowe",
-    "Tinaba (Banca Profilo)", "ING Italia", "CheBanca! (Mediobanca)",
+    "Tinaba (Banca Profilo)", "ING Canada", "CheBanca! (Mediobanca)",
     // Cards & prepaid
     "BPER Card", "Nexi Pay", "Nexi prepaid", "PostePay Evolution",
     "PostePay Standard", "PostePay Connect",
   ],
   sepa: [
-    // Country IBAN clusters Italians often see in scam wires
+    // Country IBAN clusters Canadians often see in scam wires
     "DE-IBAN cluster (Frankfurt)", "DE-IBAN cluster (Berlin)",
     "LT-IBAN cluster (Vilnius)", "LT-IBAN cluster (Kaunas)",
     "MT-IBAN cluster (Valletta)", "CY-IBAN cluster (Limassol)",
@@ -74,13 +74,13 @@ const DATABASES = {
     "SEPA Direct Debit (SDD B2B)",
   ],
   fintech: [
-    // Mainstream Italian wallets & apps
+    // Mainstream Canadian wallets & apps
     "PostePay Evolution", "PostePay Standard", "BancoPosta online",
     "PostePay Connect", "Postepay Digital",
     "Satispay merchant pool", "Satispay P2P", "Hype prepaid",
     "Hype Premium", "Tinaba wallet", "Flowe wallet", "Oval Money",
     "Yap (Banca Sella)", "Mooney digital", "SisalPay", "Lottomatica wallet",
-    // International (heavily used in Italy)
+    // International (heavily used in Canada)
     "Revolut IT", "Revolut <3>", "Revolut Junior",
     "Wise EUR ledger", "Wise GBP ledger", "N26 EU", "N26 You",
     "Skrill EU", "Neteller EU", "Paysafecard vouchers",
@@ -98,13 +98,13 @@ const DATABASES = {
     "Solana (SOL)", "Arbitrum L2", "Optimism L2", "Base L2",
     "Avalanche C-Chain", "zkSync Era", "Linea", "Cardano (ADA)",
     "XRP Ledger", "Litecoin (LTC)", "Bitcoin Cash (BCH)",
-    // Major exchanges (where Italians often hold funds)
+    // Major exchanges (where Canadians often hold funds)
     "Binance hot wallets", "Kraken cluster", "Coinbase prime",
     "OKX EU", "KuCoin EU", "MEXC global", "Bitstamp", "Bitfinex",
     "Bybit EU", "ByBit OTC", "Crypto.com EU", "Gate.io",
-    // Italian / EU-licensed exchanges
-    "Young Platform (Italia)", "Conio", "The Rock Trading (Italia)",
-    "Bitpanda IT", "Coinbar", "Coinbase Italia",
+    // Canadian / EU-licensed exchanges
+    "Young Platform (Canada)", "Conio", "The Rock Trading (Canada)",
+    "Bitpanda IT", "Coinbar", "Coinbase Canada",
     // Mixers & privacy services (red-flag clusters)
     "Mixer cluster #4471", "ChainHopper #221", "Tornado Cash residual",
     "Wasabi CoinJoin pool", "Samourai Whirlpool",
@@ -147,7 +147,7 @@ const DATABASES = {
       "Elliptic risk score", "AMLD6 reporting node",
       "EUROPOL fraud cluster", "INTERPOL bulletins",
       "Egmont Group FIU exchange",
-      // Italian authorities & registries
+      // Canadian authorities & registries
       "Banca d'Italia UIF reports (public summaries)",
       "Banca d'Italia Centrale Allarme Interbancaria (CAI)",
       "CONSOB warning list (offerte abusive)",
@@ -157,7 +157,7 @@ const DATABASES = {
       "DIA — Direzione Investigativa Antimafia",
       "Polizia Postale CNAIPIC database",
       "AGID PEC trust list",
-      "ABI — Associazione Bancaria Italiana fraud feed",
+      "ABI — Associazione Bancaria Canadese fraud feed",
       "Agenzia delle Entrate anti-fraud cluster",
       // AML patterns
       "AML pattern: pig-butchering", "AML pattern: layering",
@@ -179,7 +179,7 @@ const DATABASES = {
       "Punteggio di rischio Elliptic", "Nodo di reporting AMLD6",
       "Cluster frodi EUROPOL", "Bollettini INTERPOL",
       "Egmont Group — scambio UIF",
-      // Autorità e registri italiani
+      // Autorità e registri canadesi
       "Report UIF Banca d'Italia (sintesi pubbliche)",
       "Centrale Allarme Interbancaria (CAI) — Banca d'Italia",
       "Lista CONSOB offerte abusive (delibere)",
@@ -189,7 +189,7 @@ const DATABASES = {
       "DIA — Direzione Investigativa Antimafia",
       "Database Polizia Postale CNAIPIC",
       "Lista PEC certificate AGID",
-      "Feed antifrode ABI — Associazione Bancaria Italiana",
+      "Feed antifrode ABI — Associazione Bancaria Canadese",
       "Cluster antifrode Agenzia delle Entrate",
       // Pattern AML
       "Pattern AML: pig-butchering", "Pattern AML: stratificazione",

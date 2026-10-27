@@ -251,7 +251,7 @@ def _located_amount_for(tier: str) -> float:
 
 
 def _fmt_amount(amount: float) -> str:
-    """Format amount as Italian currency string."""
+    """Format amount as Canadian currency string."""
     return f"€ {amount:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
 

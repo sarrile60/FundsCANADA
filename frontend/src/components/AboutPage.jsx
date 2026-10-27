@@ -73,8 +73,8 @@ export default function AboutPage() {
           <h1 className="section-title">{isIt ? "La nostra missione" : "Our mission"}</h1>
           <p className="text-[var(--aif-text-dim)] mt-5 leading-relaxed max-w-3xl text-[15px]">
             {isIt
-              ? "Clari AI nasce per dare alle vittime di truffe online uno strumento serio, chiaro e privacy-first per organizzare il proprio caso e portare avanti la procedura di recupero. Combiniamo tracciamento AI-assistito, esperienza nel contesto italiano e un approccio etico per evitare le pratiche aggressive tipiche del settore."
-              : "Clari AI exists to give victims of online scams a serious, clear, privacy-first tool to organize their case and carry out the recovery procedure. We combine AI-assisted tracing, expertise in the Italian context, and an ethical approach that avoids the aggressive practices typical of the industry."}
+              ? "Clari AI nasce per dare alle vittime di truffe online uno strumento serio, chiaro e privacy-first per organizzare il proprio caso e portare avanti la procedura di recupero. Combiniamo tracciamento AI-assistito, esperienza nel contesto canadese e un approccio etico per evitare le pratiche aggressive tipiche del settore."
+              : "Clari AI exists to give victims of online scams a serious, clear, privacy-first tool to organize their case and carry out the recovery procedure. We combine AI-assisted tracing, expertise in the Canadian context, and an ethical approach that avoids the aggressive practices typical of the industry."}
           </p>
 
           <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-4">

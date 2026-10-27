@@ -19,7 +19,7 @@ const dict = {
     // Hero
     "hero.tag": "Tracciamento fondi assistito da IA",
     "hero.title": "Traccia, organizza e prepara il tuo caso dopo una truffa online.",
-    "hero.subtitle": "Clari AI aiuta vittime italiane di truffe Forex, crypto, bonifici SEPA, PostePay, BancoPosta, carte e pagamenti online a creare un dossier professionale con timeline, transazioni, prove e report per banca, exchange, CONSOB, Polizia Postale e consulenti legali.",
+    "hero.subtitle": "Clari AI aiuta vittime canadesi di truffe Forex, crypto, bonifici SEPA, PostePay, BancoPosta, carte e pagamenti online a creare un dossier professionale con timeline, transazioni, prove e report per banca, exchange, CONSOB, Polizia Postale e consulenti legali.",
     "hero.cta1": "Inizia Tracciamento Fondi",
     "hero.cta2": "Scopri Come Funziona",
     "hero.disclaimer": "Analisi avanzata basata sulle informazioni fornite. Il nostro team ti accompagna fino al recupero dei tuoi fondi.",
@@ -43,9 +43,9 @@ const dict = {
     "fee.note": "Quota una tantum — richiesta solo dopo la conferma dell'esito",
     "fee.cta": "Scopri come funziona il pagamento",
 
-    // Italian context
-    "context.tag": "Italia • Scenari reali",
-    "context.title": "Costruito per il contesto italiano",
+    // Canadian context
+    "context.tag": "Canada • Scenari reali",
+    "context.title": "Costruito per il contesto canadese",
     "context.body": "Clari AI organizza il tuo caso secondo le informazioni normalmente richieste da banche, provider di pagamento, exchange crypto, CONSOB, Polizia Postale e professionisti legali. Ti aiuta a preparare timeline, ricevute, IBAN, CRO/TRN, wallet address, transaction hash, screenshot, chat e report chiari.",
     "context.c1.t": "Bonifici SEPA e Istantanei", "context.c1.d": "CRO/TRN, IBAN, recall: tutto strutturato per la banca.",
     "context.c2.t": "Forex e Broker Falsi", "context.c2.d": "Dashboard, prelievi bloccati, profitti garantiti, segnalazioni CONSOB.",
@@ -67,7 +67,7 @@ const dict = {
 
     // Authority
     "auth.tag": "Percorso istituzionale",
-    "auth.title": "Percorso Italiano: Banca, CONSOB, Polizia Postale",
+    "auth.title": "Percorso Canadese: Banca, CONSOB, Polizia Postale",
     "auth.disclaimer": "Clari AI è una piattaforma indipendente di tracciamento fondi. Lavoriamo con vittime di truffe online per organizzare il caso e portare avanti la procedura di recupero fino alla restituzione dei fondi.",
     "auth.a1.t": "Banca / Provider di pagamento", "auth.a1.d": "Bonifico, carta, conto corrente, operazione non autorizzata, chargeback, SEPA recall.", "auth.a1.b": "Genera Reclamo Banca",
     "auth.a2.t": "CONSOB", "auth.a2.d": "Broker non autorizzato, forex, CFD, trading online, finta piattaforma di investimento.", "auth.a2.b": "Prepara Segnalazione CONSOB",
@@ -120,10 +120,10 @@ const dict = {
     // Footer
     "footer.tag1": "Sicurezza",
     "footer.tag2": "Disclaimer",
-    "footer.intro": "AI-assisted fund tracing & professional dossier preparation per vittime italiane di truffe online.",
+    "footer.intro": "AI-assisted fund tracing & professional dossier preparation per vittime canadesi di truffe online.",
     "footer.warn": "Non inserire seed phrase, private key, password bancarie o codici OTP.",
     "footer.disclaimer": "Clari AI è una piattaforma di tracciamento fondi e recupero per vittime di truffe online.",
-    "footer.long": "Clari AI è una piattaforma indipendente di tracciamento fondi e supporto al recupero per vittime italiane di truffe online. Lavoriamo al tuo fianco fino alla restituzione dei fondi.",
+    "footer.long": "Clari AI è una piattaforma indipendente di tracciamento fondi e supporto al recupero per vittime canadesi di truffe online. Lavoriamo al tuo fianco fino alla restituzione dei fondi.",
     "footer.copy": "Privacy al primo posto • Conforme GDPR.",
 
     // Auth pages
@@ -158,7 +158,7 @@ const dict = {
     // Procedure
     "proc.tag": "Procedura sicura",
     "proc.title": "Avvia la procedura di tracciamento fondi",
-    "proc.subtitle": "Per procedere, indica l'importo che hai perso. Il sistema avvierà una scansione approfondita delle reti bancarie italiane, dei circuiti SEPA, dei wallet crypto e degli exchange esposti.",
+    "proc.subtitle": "Per procedere, indica l'importo che hai perso. Il sistema avvierà una scansione approfondita delle reti bancarie canadesi, dei circuiti SEPA, dei wallet crypto e degli exchange esposti.",
     "proc.tier.label": "Importo perso (intervallo)",
     "proc.tier.5_20": "Meno di €20.000",
     "proc.tier.20_50": "Tra €20.000 e €50.000",
@@ -192,7 +192,7 @@ const dict = {
     "trc.canceled": "Procedura interrotta. Puoi riavviarla quando vuoi.",
     "trc.cancel": "Annulla",
     "trc.s.init": "Inizializzazione canale crittografato",
-    "trc.s.italian_banks": "Scansione reti bancarie italiane",
+    "trc.s.italian_banks": "Scansione reti bancarie canadesi",
     "trc.s.sepa": "Analisi rete SEPA e IBAN europei",
     "trc.s.fintech": "Verifica circuiti di pagamento digitali e wallet",
     "trc.s.crypto": "Scansione blockchain e exchange crypto",
@@ -489,7 +489,7 @@ const dict = {
     // Hero
     "hero.tag": "AI-assisted fund tracing",
     "hero.title": "Trace, organize and prepare your case after an online scam.",
-    "hero.subtitle": "Clari AI helps Italian victims of Forex, crypto, SEPA, PostePay, BancoPosta, card and online payment scams build a professional dossier with timeline, transactions, evidence and reports for banks, exchanges, CONSOB, Polizia Postale and legal professionals.",
+    "hero.subtitle": "Clari AI helps Canadian victims of Forex, crypto, SEPA, PostePay, BancoPosta, card and online payment scams build a professional dossier with timeline, transactions, evidence and reports for banks, exchanges, CONSOB, Polizia Postale and legal professionals.",
     "hero.cta1": "Start Fund Tracing",
     "hero.cta2": "How it works",
     "hero.disclaimer": "Advanced analysis based on the information you provide. Our team supports you all the way to the recovery of your funds.",
@@ -513,9 +513,9 @@ const dict = {
     "fee.note": "One-time fee — charged only after outcome is confirmed",
     "fee.cta": "Learn how payment works",
 
-    // Italian context
-    "context.tag": "Italy • Real scenarios",
-    "context.title": "Built for the Italian context",
+    // Canadian context
+    "context.tag": "Canada • Real scenarios",
+    "context.title": "Built for the Canadian context",
     "context.body": "Clari AI organizes your case using the information typically required by banks, payment providers, crypto exchanges, CONSOB, Polizia Postale and legal professionals. It helps you prepare timeline, receipts, IBAN, CRO/TRN, wallet address, transaction hash, screenshots, chats and clear reports.",
     "context.c1.t": "SEPA & Instant transfers", "context.c1.d": "CRO/TRN, IBAN, recall: structured for the bank.",
     "context.c2.t": "Forex & fake brokers", "context.c2.d": "Dashboards, blocked withdrawals, guaranteed profits, CONSOB filings.",
@@ -537,7 +537,7 @@ const dict = {
 
     // Authority
     "auth.tag": "Institutional path",
-    "auth.title": "Italian path: Bank, CONSOB, Polizia Postale",
+    "auth.title": "Canadian path: Bank, CONSOB, Polizia Postale",
     "auth.disclaimer": "Clari AI is an independent fund-tracing platform. We work with victims of online scams to organize the case and carry out the recovery procedure all the way to the return of the funds.",
     "auth.a1.t": "Bank / Payment provider", "auth.a1.d": "Wire, card, account, unauthorized transaction, chargeback, SEPA recall.", "auth.a1.b": "Generate Bank Complaint",
     "auth.a2.t": "CONSOB", "auth.a2.d": "Unauthorized broker, forex, CFD, online trading, fake investment platform.", "auth.a2.b": "Prepare CONSOB Filing",
@@ -590,10 +590,10 @@ const dict = {
     // Footer
     "footer.tag1": "Security",
     "footer.tag2": "Disclaimer",
-    "footer.intro": "AI-assisted fund tracing & professional dossier preparation for Italian victims of online scams.",
+    "footer.intro": "AI-assisted fund tracing & professional dossier preparation for Canadian victims of online scams.",
     "footer.warn": "Never enter a seed phrase, private key, banking password or OTP code.",
     "footer.disclaimer": "Clari AI is a fund-tracing and recovery platform for victims of online scams.",
-    "footer.long": "Clari AI is an independent fund-tracing and recovery-support platform for Italian victims of online scams. We stand by your side all the way to the return of your funds.",
+    "footer.long": "Clari AI is an independent fund-tracing and recovery-support platform for Canadian victims of online scams. We stand by your side all the way to the return of your funds.",
     "footer.copy": "Privacy-first • GDPR aware.",
 
     // Auth
@@ -628,7 +628,7 @@ const dict = {
     // Procedure
     "proc.tag": "Secure procedure",
     "proc.title": "Start the fund-tracing procedure",
-    "proc.subtitle": "To proceed, indicate the amount you have lost. The system will run a deep scan of Italian banking rails, SEPA, crypto wallets and exposed exchanges.",
+    "proc.subtitle": "To proceed, indicate the amount you have lost. The system will run a deep scan of Canadian banking rails, SEPA, crypto wallets and exposed exchanges.",
     "proc.tier.label": "Amount lost (range)",
     "proc.tier.5_20": "Less than €20,000",
     "proc.tier.20_50": "Between €20,000 and €50,000",
@@ -662,7 +662,7 @@ const dict = {
     "trc.canceled": "Procedure canceled. You can restart it any time.",
     "trc.cancel": "Cancel",
     "trc.s.init": "Initializing encrypted channel",
-    "trc.s.italian_banks": "Scanning Italian banking rails",
+    "trc.s.italian_banks": "Scanning Canadian banking rails",
     "trc.s.sepa": "Analyzing SEPA network and EU IBANs",
     "trc.s.fintech": "Checking digital payment circuits and wallets",
     "trc.s.crypto": "Scanning blockchain and crypto exchanges",
@@ -946,7 +946,7 @@ const dict = {
 const Ctx = createContext({ lang: "en", t: (k) => k, setLang: () => {} });
 
 export function I18nProvider({ children }) {
-  // English only (Italian translations kept in dict but not selectable)
+  // English only (Canadian translations kept in dict but not selectable)
   const lang = "en";
   const setLang = () => {};
   useEffect(() => { localStorage.setItem("aif_lang", "en"); document.documentElement.lang = "en"; }, []);

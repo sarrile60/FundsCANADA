@@ -116,7 +116,7 @@ function FeaturedInStrip() {
     { tag: "FBI IC3",   label: isIt ? "Cybercrime USA" : "US Cybercrime" },
     { tag: "BLOCKCHAIN",label: isIt ? "Analisi On-Chain" : "On-Chain Analysis" },
     { tag: "HMRC",      label: isIt ? "Fisco UK" : "UK Tax Authority" },
-    { tag: "CONSOB",    label: isIt ? "Autorità Italia" : "Italian Authority" },
+    { tag: "CONSOB",    label: isIt ? "Autorità Canada" : "Canadian Authority" },
     { tag: "ESMA",      label: isIt ? "Mercati UE" : "EU Markets" },
   ];
   return (
@@ -206,7 +206,7 @@ function AuthorityPath() {
   const { t, lang } = useI18n();
   const isIt = lang === "it";
   
-  // Italian authorities
+  // Canadian authorities
   const italianCards = [
     { icon: Building2,   color: "#5FE3C9", k: "a1" },
     { icon: ShieldCheck, color: "#6E8BFF", k: "a2" },
@@ -231,7 +231,7 @@ function AuthorityPath() {
 
   return (
     <Section id="reports" className="py-16 md:py-24">
-      {/* Italian Path */}
+      {/* Canadian Path */}
       <div className="mb-10">
         <SmallTag icon={FileCheck2}>{t("auth.tag")}</SmallTag>
         <h2 className="section-title mt-3">{t("auth.title")}</h2>
