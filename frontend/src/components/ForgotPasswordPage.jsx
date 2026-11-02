@@ -106,7 +106,7 @@ export default function ForgotPasswordPage() {
                         data-testid="forgot-email"
                         value={email}
                         onChange={e => setEmail(e.target.value)}
-                        placeholder="tu@esempio.it"
+                        placeholder="you@example.com"
                         autoFocus
                         required
                       />

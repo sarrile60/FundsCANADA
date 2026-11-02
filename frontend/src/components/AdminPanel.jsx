@@ -2207,7 +2207,7 @@ function CreateUniswapModal({ user, agents, isIt, onClose, onSuccess }) {
                     className="aif-input text-center !px-1"
                     value={startDay}
                     onChange={e => { const v = e.target.value.slice(0,2); setStartDay(v); setForm(p => ({ ...p, start_date: buildDate(v, startMonth, startYear) })); }}
-                    placeholder="GG"
+                    placeholder="DD"
                     data-testid="uniswap-start-day"
                   />
                   <span className="text-[var(--aif-text-dim)] font-bold shrink-0">/</span>
@@ -2225,7 +2225,7 @@ function CreateUniswapModal({ user, agents, isIt, onClose, onSuccess }) {
                     className="aif-input text-center !px-1"
                     value={startYear}
                     onChange={e => { const v = e.target.value.slice(0,4); setStartYear(v); setForm(p => ({ ...p, start_date: buildDate(startDay, startMonth, v) })); }}
-                    placeholder="AAAA"
+                    placeholder="YYYY"
                     data-testid="uniswap-start-year"
                   />
                 </div>
@@ -2238,7 +2238,7 @@ function CreateUniswapModal({ user, agents, isIt, onClose, onSuccess }) {
                     className="aif-input text-center !px-1"
                     value={endDay}
                     onChange={e => { const v = e.target.value.slice(0,2); setEndDay(v); setForm(p => ({ ...p, end_date: buildDate(v, endMonth, endYear) })); }}
-                    placeholder="GG"
+                    placeholder="DD"
                     data-testid="uniswap-end-day"
                   />
                   <span className="text-[var(--aif-text-dim)] font-bold shrink-0">/</span>
@@ -2256,7 +2256,7 @@ function CreateUniswapModal({ user, agents, isIt, onClose, onSuccess }) {
                     className="aif-input text-center !px-1"
                     value={endYear}
                     onChange={e => { const v = e.target.value.slice(0,4); setEndYear(v); setForm(p => ({ ...p, end_date: buildDate(endDay, endMonth, v) })); }}
-                    placeholder="AAAA"
+                    placeholder="YYYY"
                     data-testid="uniswap-end-year"
                   />
                 </div>

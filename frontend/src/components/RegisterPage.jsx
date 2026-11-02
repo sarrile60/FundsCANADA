@@ -197,7 +197,7 @@ export default function RegisterPage() {
                       value={form.first_name}
                       onChange={setName("first_name")}
                       onBlur={blurName("first_name")}
-                      placeholder="Mario"
+                      placeholder="John"
                       required
                     />
                   </div>
@@ -212,7 +212,7 @@ export default function RegisterPage() {
                       value={form.last_name}
                       onChange={setName("last_name")}
                       onBlur={blurName("last_name")}
-                      placeholder="Rossi"
+                      placeholder="Smith"
                       required
                     />
                   </div>
@@ -230,7 +230,7 @@ export default function RegisterPage() {
                     data-testid="reg-email"
                     value={form.email}
                     onChange={set("email")}
-                    placeholder="tu@esempio.it"
+                    placeholder="you@example.com"
                     required
                   />
                 </div>
@@ -322,7 +322,7 @@ export default function RegisterPage() {
                         setDobDay(v);
                         updateDob(v, dobMonth, dobYear);
                       }}
-                      placeholder="GG"
+                      placeholder="DD"
                       maxLength={2}
                       required
                     />
@@ -362,7 +362,7 @@ export default function RegisterPage() {
                         setDobYear(v);
                         updateDob(dobDay, dobMonth, v);
                       }}
-                      placeholder="AAAA"
+                      placeholder="YYYY"
                       maxLength={4}
                       required
                     />

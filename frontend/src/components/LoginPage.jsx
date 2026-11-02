@@ -80,7 +80,7 @@ export default function LoginPage() {
                     data-testid="login-email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
-                    placeholder="tu@esempio.it"
+                    placeholder="you@example.com"
                     required
                   />
                 </div>
