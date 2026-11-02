@@ -37,52 +37,41 @@ const STAGES = [
 // recognize — making the procedure feel real and locally relevant.
 const DATABASES = {
   italian_banks: [
-    // Top retail banks
-    "Intesa Sanpaolo", "UniCredit", "Banco BPM", "BPER Banca",
-    "Monte dei Paschi di Siena", "Credit Agricole Canada", "BNL — BNP Paribas",
-    "Banca Mediolanum", "Banca Generali", "Banca Sella", "Fineco Bank",
-    "Banca Popolare di Sondrio", "Banca Popolare dell'Emilia Romagna",
-    "Credem", "Banca Carige", "Cariparma", "Banca Popolare di Bari",
-    // Postal & cooperative
-    "BancoPosta — Poste Italiane", "Iccrea Banca", "Cassa Centrale Banca",
-    "BCC — Credito Cooperativo", "Banca di Bologna", "BCC Roma",
+    // Top Canadian banks
+    "Royal Bank of Canada (RBC)", "TD Bank", "Bank of Montreal (BMO)", "Scotiabank",
+    "CIBC", "National Bank of Canada", "Desjardins", "HSBC Canada",
+    "Tangerine", "Simplii Financial", "EQ Bank", "Manulife Bank",
+    "Laurentian Bank", "Canadian Western Bank", "ATB Financial",
+    // Credit Unions
+    "Vancity", "Coast Capital Savings", "Meridian Credit Union",
+    "Servus Credit Union", "Conexus Credit Union", "First West Credit Union",
     // Online & mobile-first
-    "Hype (Banca Sella)", "Webank (Banco BPM)", "Buddybank (UniCredit)",
-    "Illimity Bank", "Banca Progetto", "Aidexa", "Flowe",
-    "Tinaba (Banca Profilo)", "ING Canada", "CheBanca! (Mediobanca)",
-    // Cards & prepaid
-    "BPER Card", "Nexi Pay", "Nexi prepaid", "PostePay Evolution",
-    "PostePay Standard", "PostePay Connect",
+    "Wealthsimple Cash", "KOHO", "Mogo", "Neo Financial",
+    "STACK", "Motusbank (Meridian)", "Alterna Bank",
+    // Cards & payment services
+    "Interac", "Interac e-Transfer", "Visa Canada", "Mastercard Canada",
+    "American Express Canada", "PayPal Canada",
   ],
   sepa: [
-    // Country IBAN clusters Canadians often see in scam wires
+    // International wire destinations common in scams
     "DE-IBAN cluster (Frankfurt)", "DE-IBAN cluster (Berlin)",
-    "LT-IBAN cluster (Vilnius)", "LT-IBAN cluster (Kaunas)",
-    "MT-IBAN cluster (Valletta)", "CY-IBAN cluster (Limassol)",
-    "BG-IBAN cluster (Sofia)", "EE-IBAN cluster (Tallinn)",
-    "LV-IBAN cluster (Riga)", "PL-IBAN cluster (Warsaw)",
-    "HU-IBAN cluster (Budapest)", "RO-IBAN cluster (Bucharest)",
-    "SK-IBAN cluster (Bratislava)", "CZ-IBAN cluster (Prague)",
-    "NL-IBAN cluster (Amsterdam)", "ES-IBAN cluster (Madrid)",
-    "FR-IBAN cluster (Paris)", "BE-IBAN cluster (Brussels)",
+    "LT-IBAN cluster (Vilnius)", "MT-IBAN cluster (Valletta)",
+    "CY-IBAN cluster (Limassol)", "BG-IBAN cluster (Sofia)",
+    "EE-IBAN cluster (Tallinn)", "LV-IBAN cluster (Riga)",
+    "PL-IBAN cluster (Warsaw)", "HU-IBAN cluster (Budapest)",
     "GB-IBAN cluster (London)", "CH-IBAN cluster (Zurich)",
-    "LU-IBAN cluster (Luxembourg)",
-    // Settlement & clearing systems
-    "Instant SEPA gateway (SCT Inst)", "TARGET2 settlement",
-    "STEP2 ACH (EBA Clearing)", "TIPS — TARGET Instant Payment",
-    "SWIFT gpi tracker", "SEPA Direct Debit (SDD CORE)",
-    "SEPA Direct Debit (SDD B2B)",
+    // North American wire systems
+    "SWIFT CAD wire", "SWIFT USD wire", "Fedwire (US destination)",
+    "CHIPS clearing", "ACH transfer (US)", "EFT Canada",
+    "Interac e-Transfer network",
   ],
   fintech: [
-    // Mainstream Canadian wallets & apps
-    "PostePay Evolution", "PostePay Standard", "BancoPosta online",
-    "PostePay Connect", "Postepay Digital",
-    "Satispay merchant pool", "Satispay P2P", "Hype prepaid",
-    "Hype Premium", "Tinaba wallet", "Flowe wallet", "Oval Money",
-    "Yap (Banca Sella)", "Mooney digital", "SisalPay", "Lottomatica wallet",
+    // Canadian fintech & digital wallets
+    "Wealthsimple Cash", "KOHO prepaid", "Mogo Card",
+    "STACK prepaid", "Neo Financial", "PayBright",
+    "Paytm Canada", "Square Cash", "Venmo (US link)",
     // International (heavily used in Canada)
-    "Revolut IT", "Revolut <3>", "Revolut Junior",
-    "Wise USD ledger", "Wise GBP ledger", "N26 EU", "N26 You",
+    "Revolut", "Wise CAD ledger", "Wise USD ledger",
     "Skrill EU", "Neteller EU", "Paysafecard vouchers",
     // Money transfer corridors
     "Western Union MTCN", "MoneyGram EU corridor", "Ria Money Transfer",

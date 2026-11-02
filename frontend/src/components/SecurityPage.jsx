@@ -15,24 +15,24 @@ export default function SecurityPage() {
   const redFlags = isIt ? [
     "Promette il recupero al 100% in pochi giorni.",
     "Chiede una 'tassa di sblocco', 'commissione AML', 'gas fee' o 'certificato' anticipato.",
-    "Si presenta come avvocato, agente CONSOB, funzionario Banca d'Italia, ECB, Interpol o Polizia Postale senza prove verificabili.",
+    "Si presenta come avvocato, agente della polizia, funzionario governativo o di Interpol senza prove verificabili.",
     "Ti contatta su WhatsApp o Telegram da un numero estero.",
     "Ti chiede di installare AnyDesk, TeamViewer, RustDesk o altri software di accesso remoto.",
     "Ti chiede la tua seed phrase, private key, password bancaria o codici OTP.",
     "Mostra dashboard finte con 'fondi recuperati' e ti chiede di pagare per ritirarli.",
-    "Ti dice di non parlarne con la banca o con la Polizia Postale.",
-    "Pretende il pagamento solo in crypto, gift card, Western Union, Postepay o ricariche.",
+    "Ti dice di non parlarne con la banca o con la polizia.",
+    "Pretende il pagamento solo in crypto, gift card, Western Union, Interac e-Transfer o ricariche.",
     "Ha un sito web con dominio recente (<6 mesi), nessuna informazione legale, nessuna sede fisica verificabile.",
   ] : [
     "Promises 100% recovery within days.",
     "Asks for an upfront 'unlock fee', 'AML fee', 'gas fee', or 'certificate'.",
-    "Claims to be a lawyer, CONSOB agent, Banca d'Italia officer, ECB, Interpol, or Polizia Postale without verifiable proof.",
+    "Claims to be a lawyer, RCMP officer, government official, or Interpol agent without verifiable proof.",
     "Contacts you on WhatsApp or Telegram from a foreign number.",
     "Asks you to install AnyDesk, TeamViewer, RustDesk, or any remote-access software.",
     "Asks for your seed phrase, private key, banking password, or OTP codes.",
     "Shows fake dashboards with 'recovered funds' and asks you to pay to withdraw them.",
     "Tells you not to talk to your bank or the police.",
-    "Demands payment only in crypto, gift cards, Western Union, Postepay, or top-ups.",
+    "Demands payment only in crypto, gift cards, Western Union, Interac e-Transfer, or prepaid cards.",
     "Has a website with a recent domain (<6 months), no legal information, no verifiable physical address.",
   ];
 
@@ -40,10 +40,10 @@ export default function SecurityPage() {
     "Verifica sempre l'identità di chi ti contatta tramite i canali ufficiali della presunta organizzazione.",
     "Non condividere mai password, codici OTP, seed phrase o private key.",
     "Non installare software di accesso remoto su richiesta di sconosciuti.",
-    "Conserva tutte le prove originali: email, chat, screenshot, ricevute, transaction hash, IBAN.",
-    "Sporgi denuncia / querela presso la Polizia Postale (commissariatodips.it) o un Commissariato locale.",
+    "Conserva tutte le prove originali: email, chat, screenshot, ricevute, transaction hash, numeri di conto.",
+    "Segnala alla polizia locale o alla RCMP.",
     "Contatta la tua banca per richiedere recall o chargeback nei tempi del circuito.",
-    "Per truffe di investimento: segnala a CONSOB tramite www.consob.it.",
+    "Per truffe di investimento: segnala alle autorità di regolamentazione dei valori mobiliari (CSA/OSC/AMF/BCSC).",
     "Per truffe crypto: contatta l'exchange esposto e prepara una richiesta di freeze.",
     "Diffida di chiunque ti prometta recuperi miracolosi a fronte di pagamenti anticipati.",
     "Consultati con un avvocato esperto in frodi finanziarie prima di firmare contratti o effettuare pagamenti.",
@@ -51,10 +51,10 @@ export default function SecurityPage() {
     "Always verify the identity of anyone contacting you through the official channels of the claimed organization.",
     "Never share passwords, OTP codes, seed phrases, or private keys.",
     "Do not install remote-access software at the request of strangers.",
-    "Keep all original evidence: emails, chats, screenshots, receipts, transaction hashes, IBANs.",
-    "File a police report with Polizia Postale (commissariatodips.it) or your local police station.",
+    "Keep all original evidence: emails, chats, screenshots, receipts, transaction hashes, account numbers.",
+    "File a report with the Canadian Anti-Fraud Centre (CAFC) at antifraudcentre-centreantifraude.ca and your local police.",
     "Contact your bank to request a recall or chargeback within the scheme's deadlines.",
-    "For investment scams: report to CONSOB at www.consob.it.",
+    "For investment scams: report to your provincial securities regulator (CSA/OSC/AMF/BCSC) at aretheyregistered.ca.",
     "For crypto scams: contact the exposed exchange and prepare a freeze request.",
     "Be suspicious of anyone promising miraculous recoveries in exchange for upfront payments.",
     "Consult a lawyer experienced in financial fraud before signing contracts or making payments.",
@@ -128,11 +128,12 @@ export default function SecurityPage() {
               {isIt ? "Risorse ufficiali" : "Official resources"}
             </h2>
             <ul className="mt-4 space-y-2 text-[14px]">
-              <li><a href="https://www.commissariatodips.it" target="_blank" rel="noopener noreferrer" className="aif-link">Polizia Postale — Commissariato di P.S. Online (commissariatodips.it)</a></li>
-              <li><a href="https://www.consob.it" target="_blank" rel="noopener noreferrer" className="aif-link">CONSOB — Avvisi su offerte di investimento abusive (consob.it)</a></li>
-              <li><a href="https://www.bancaditalia.it" target="_blank" rel="noopener noreferrer" className="aif-link">Banca d'Italia — Educazione finanziaria e segnalazioni (bancaditalia.it)</a></li>
-              <li><a href="https://www.poste.it/sicurezza-online.html" target="_blank" rel="noopener noreferrer" className="aif-link">Poste Italiane — Sicurezza online</a></li>
-              <li><a href="https://www.garanteprivacy.it" target="_blank" rel="noopener noreferrer" className="aif-link">Garante per la Protezione dei Dati Personali (garanteprivacy.it)</a></li>
+              <li><a href="https://antifraudcentre-centreantifraude.ca" target="_blank" rel="noopener noreferrer" className="aif-link">Canadian Anti-Fraud Centre (CAFC) — Report fraud and scams</a></li>
+              <li><a href="https://www.aretheyregistered.ca" target="_blank" rel="noopener noreferrer" className="aif-link">Canadian Securities Administrators — Check if a broker is registered</a></li>
+              <li><a href="https://www.rcmp-grc.gc.ca" target="_blank" rel="noopener noreferrer" className="aif-link">RCMP — Royal Canadian Mounted Police</a></li>
+              <li><a href="https://fintrac-canafe.canada.ca" target="_blank" rel="noopener noreferrer" className="aif-link">FINTRAC — Financial Transactions and Reports Analysis Centre of Canada</a></li>
+              <li><a href="https://www.obsi.ca" target="_blank" rel="noopener noreferrer" className="aif-link">OBSI — Ombudsman for Banking Services and Investments</a></li>
+              <li><a href="https://www.priv.gc.ca" target="_blank" rel="noopener noreferrer" className="aif-link">Office of the Privacy Commissioner of Canada</a></li>
             </ul>
           </div>
 

@@ -106,24 +106,24 @@ function FeaturedInStrip() {
   const isIt = lang === "it";
   // International authorities and databases we connect to during tracing
   const items = [
-    { tag: "BCE",       label: isIt ? "Banca Centrale Europea" : "European Central Bank" },
-    { tag: "EUROPOL",   label: isIt ? "Polizia Europea" : "European Police" },
-    { tag: "INTERPOL",  label: isIt ? "Polizia Internazionale" : "International Police" },
-    { tag: "OLAF",      label: isIt ? "Anti-Frode UE" : "EU Anti-Fraud" },
-    { tag: "S.E.V.I.F", label: isIt ? "Vigilanza Finanziaria" : "Financial Supervision" },
-    { tag: "AML",       label: isIt ? "Anti-Riciclaggio" : "Anti-Money Laundering" },
-    { tag: "SFO",       label: isIt ? "Serious Fraud Office" : "Serious Fraud Office" },
-    { tag: "FBI IC3",   label: isIt ? "Cybercrime USA" : "US Cybercrime" },
-    { tag: "BLOCKCHAIN",label: isIt ? "Analisi On-Chain" : "On-Chain Analysis" },
-    { tag: "HMRC",      label: isIt ? "Fisco UK" : "UK Tax Authority" },
-    { tag: "CONSOB",    label: isIt ? "Autorità Canada" : "Canadian Authority" },
-    { tag: "ESMA",      label: isIt ? "Mercati UE" : "EU Markets" },
+    { tag: "CAFC",      label: "Canadian Anti-Fraud Centre" },
+    { tag: "RCMP",      label: "Royal Canadian Mounted Police" },
+    { tag: "FINTRAC",   label: "Financial Intelligence" },
+    { tag: "CSA",       label: "Securities Administrators" },
+    { tag: "OBSI",      label: "Banking Ombudsman" },
+    { tag: "AML",       label: "Anti-Money Laundering" },
+    { tag: "FBI IC3",   label: "US Cybercrime" },
+    { tag: "INTERPOL",  label: "International Police" },
+    { tag: "BLOCKCHAIN",label: "On-Chain Analysis" },
+    { tag: "SWIFT",     label: "Wire Network" },
+    { tag: "INTERAC",   label: "e-Transfer Network" },
+    { tag: "EXCHANGES", label: "Crypto Exchanges" },
   ];
   return (
     <Section className="py-8 md:py-10">
       <div className="text-center">
         <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--aif-text-dim)] mb-5">
-          {isIt ? "Database e autorità connesse durante il tracciamento" : "Databases and authorities connected during tracing"}
+          {isIt ? "Autorità e reti analizzate durante il tracciamento" : "Authorities and networks analyzed during tracing"}
         </div>
       </div>
       <div className="aif-card p-5 md:p-6">

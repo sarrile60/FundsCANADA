@@ -109,10 +109,10 @@ export default function HeroNetwork({ animate = true }) {
         <NODE x="80" y="260" label={isIt ? "Vittima" : "Victim"} sub="" color="#5FE3C9" size={32} icon="👤" dataId="node-victim" animate={live}/>
 
         {/* Column 2: Payment Rails */}
-        <NODE x="220" y="100" label="SEPA" sub={isIt ? "Bonifico" : "Wire"} color="#5FE3C9" size={24} icon="🏦" animate={live}/>
-        <NODE x="220" y="200" label="PostePay" sub={isIt ? "Ricarica" : "Top-up"} color="#5FE3C9" size={24} icon="💳" animate={live}/>
+        <NODE x="220" y="100" label="Wire" sub="Bank Transfer" color="#5FE3C9" size={24} icon="🏦" animate={live}/>
+        <NODE x="220" y="200" label="Interac" sub="e-Transfer" color="#5FE3C9" size={24} icon="💳" animate={live}/>
         <NODE x="220" y="300" label="Crypto" sub="On-chain" color="#5FE3C9" size={24} icon="₿" animate={live}/>
-        <NODE x="220" y="400" label="Card" sub={isIt ? "Carta" : "Payment"} color="#5FE3C9" size={24} icon="💳" animate={live}/>
+        <NODE x="220" y="400" label="Card" sub="Payment" color="#5FE3C9" size={24} icon="💳" animate={live}/>
 
         {/* Column 3: Destinations */}
         <NODE x="380" y="120" label="IBAN" sub={isIt ? "Estero" : "Foreign"} color="#6E8BFF" size={22} icon="🏛️" animate={live}/>
@@ -120,19 +120,19 @@ export default function HeroNetwork({ animate = true }) {
         <NODE x="380" y="280" label="Wallet" sub={isIt ? "Sospetto" : "Suspect"} color="#6E8BFF" size={22} icon="👛" animate={live}/>
         <NODE x="380" y="360" label="Exchange" sub={isIt ? "Esposto" : "Exposed"} color="#6E8BFF" size={22} icon="🔄" animate={live}/>
 
-        {/* Column 4: International Authorities */}
-        <NODE x="560" y="80" label="BCE" sub={isIt ? "Banca Centrale" : "Central Bank"} color="#FFB454" size={20} icon="🇪🇺" animate={live}/>
-        <NODE x="560" y="160" label="EUROPOL" sub={isIt ? "Polizia UE" : "EU Police"} color="#FFB454" size={20} icon="🔵" animate={live}/>
-        <NODE x="560" y="240" label="INTERPOL" sub={isIt ? "Internazionale" : "International"} color="#FFB454" size={20} icon="🌐" animate={live}/>
-        <NODE x="560" y="320" label="OLAF" sub={isIt ? "Anti-Frode" : "Anti-Fraud"} color="#FFB454" size={20} icon="🛡️" animate={live}/>
-        <NODE x="560" y="400" label="AML" sub={isIt ? "Anti-Riciclaggio" : "Anti-Launder"} color="#FFB454" size={20} icon="🔍" animate={live}/>
-        <NODE x="560" y="480" label="BLOCKCHAIN" sub={isIt ? "Analisi" : "Analysis"} color="#FFB454" size={20} icon="⛓️" animate={live}/>
+        {/* Column 4: Canadian & International Authorities */}
+        <NODE x="560" y="80" label="FINTRAC" sub="AML Canada" color="#FFB454" size={20} icon="🇨🇦" animate={live}/>
+        <NODE x="560" y="160" label="CAFC" sub="Anti-Fraud Centre" color="#FFB454" size={20} icon="🛡️" animate={live}/>
+        <NODE x="560" y="240" label="RCMP" sub="Federal Police" color="#FFB454" size={20} icon="🚔" animate={live}/>
+        <NODE x="560" y="320" label="OBSI" sub="Banking Ombudsman" color="#FFB454" size={20} icon="⚖️" animate={live}/>
+        <NODE x="560" y="400" label="AML" sub="Anti-Launder" color="#FFB454" size={20} icon="🔍" animate={live}/>
+        <NODE x="560" y="480" label="BLOCKCHAIN" sub="Analysis" color="#FFB454" size={20} icon="⛓️" animate={live}/>
 
         {/* Column 5: Actions */}
-        <NODE x="760" y="100" label={isIt ? "Reclamo" : "Complaint"} sub={isIt ? "Banca" : "Bank"} color="#FF6B7A" size={22} icon="📄" animate={live}/>
-        <NODE x="760" y="200" label="CONSOB" sub={isIt ? "Segnalazione" : "Filing"} color="#FF6B7A" size={22} icon="⚖️" animate={live}/>
-        <NODE x="760" y="300" label="Freeze" sub={isIt ? "Exchange" : "Exchange"} color="#FF6B7A" size={22} icon="❄️" animate={live}/>
-        <NODE x="760" y="400" label={isIt ? "Polizia" : "Police"} sub={isIt ? "Denuncia" : "Report"} color="#FF6B7A" size={22} icon="🚔" animate={live}/>
+        <NODE x="760" y="100" label="Complaint" sub="Bank" color="#FF6B7A" size={22} icon="📄" animate={live}/>
+        <NODE x="760" y="200" label="CAFC" sub="Filing" color="#FF6B7A" size={22} icon="⚖️" animate={live}/>
+        <NODE x="760" y="300" label="Freeze" sub="Exchange" color="#FF6B7A" size={22} icon="❄️" animate={live}/>
+        <NODE x="760" y="400" label="Police" sub="Report" color="#FF6B7A" size={22} icon="🚔" animate={live}/>
 
         {/* Particles */}
         {live && [...Array(4)].map((_, i) => (
