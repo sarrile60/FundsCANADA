@@ -1,7 +1,7 @@
 // LandingPage — composes all sections of the Clari AI marketing page.
 // Optimized for mobile: no heavy animations, reduced motion.
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   Building2, TrendingUp, Bitcoin, CreditCard, Wallet, FileCheck2,
   ShieldAlert, ShieldCheck, Banknote, Network, AlertTriangle, ChevronDown,
@@ -452,6 +452,24 @@ function FeeDisclosure() {
 }
 
 export default function LandingPage() {
+  const location = useLocation();
+
+  // Handle hash navigation (when coming from another page like /app)
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.slice(1); // remove the #
+      // Small delay to ensure the page has rendered
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) {
+          const navOffset = 72; // sticky navbar height
+          const targetY = el.getBoundingClientRect().top + window.scrollY - navOffset;
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  }, [location.hash]);
+
   return (
     <div className="aif-app-bg">
       <div className="aif-grid-overlay absolute inset-0 pointer-events-none"/>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, LogOut, LayoutDashboard, Globe } from "lucide-react";
 import Logo from "./Logo";
 import { useI18n } from "../i18n";
@@ -9,6 +9,7 @@ export default function Navbar() {
   const { t, lang, setLang } = useI18n();
   const { user, logout } = useAuth();
   const nav = useNavigate();
+  const location = useLocation();
   const [open, setOpen] = useState(false);
 
   const items = [
@@ -22,6 +23,13 @@ export default function Navbar() {
   // Smooth-scroll with easing + sticky-navbar offset
   const scrollTo = (id) => {
     setOpen(false);
+    
+    // If not on homepage, navigate there first with the hash
+    if (location.pathname !== "/") {
+      nav(`/#${id}`);
+      return;
+    }
+    
     const el = document.getElementById(id);
     if (!el) return;
     const navOffset = 72; // sticky navbar height
