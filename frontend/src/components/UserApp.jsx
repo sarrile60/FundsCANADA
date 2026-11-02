@@ -665,7 +665,7 @@ function ActiveTracePanel({ trace, isIt, onRefresh }) {
                     ? (isIt ? "Prime transazioni rilevate" : "First transactions detected")
                     : (isIt ? "Analisi in corso" : "Analysis in progress")
             ],
-            [isIt ? "Tipo scansione" : "Scan type", isIt ? "Multi-livello (Bancaria · SEPA · Crypto · AML)" : "Multi-layer (Banking · SEPA · Crypto · AML)"],
+            [isIt ? "Tipo scansione" : "Scan type", isIt ? "Multi-livello (Bancaria · Wire · Crypto · AML)" : "Multi-layer (Banking · Wire · Crypto · AML)"],
             [isIt ? "Standard sicurezza" : "Security", "AES-256 · TLS 1.3 · GDPR"],
             [isIt ? "Riferimento" : "Reference", caseRef],
           ].map(([k, v]) => (

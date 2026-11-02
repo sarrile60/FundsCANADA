@@ -79,7 +79,7 @@ const CONTENT = {
         ["8. Trasferimenti extra-UE",
          `Eventuali trasferimenti di dati al di fuori dello Spazio Economico Europeo avvengono solo verso paesi con decisione di adeguatezza della Commissione Europea o tramite Clausole Contrattuali Standard.`],
         ["9. Reclami",
-         `L'utente ha diritto di proporre reclamo al Garante per la Protezione dei Dati Personali (www.garanteprivacy.it).`],
+         `L'utente ha diritto di proporre reclamo all'Office of the Privacy Commissioner of Canada (www.priv.gc.ca).`],
       ],
     },
     en: {
@@ -103,7 +103,7 @@ const CONTENT = {
         ["8. Non-EU transfers",
          `Any data transfers outside the European Economic Area occur only to countries with an adequacy decision by the European Commission or through Standard Contractual Clauses.`],
         ["9. Complaints",
-         `Users have the right to lodge a complaint with the Canadian Data Protection Authority (www.garanteprivacy.it).`],
+         `Users have the right to lodge a complaint with the Office of the Privacy Commissioner of Canada (www.priv.gc.ca).`],
       ],
     },
   },

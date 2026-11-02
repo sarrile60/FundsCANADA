@@ -99,22 +99,22 @@ const DATABASES = {
     "Wasabi CoinJoin pool", "Samourai Whirlpool",
   ],
   brokers: [
-    // CONSOB-warned style names (similar to public delibere format)
-    "FXOpenMarkets.io (CONSOB warned)", "TradeProElite.com (CONSOB warned)",
-    "GoldenFXCapital.com (CONSOB warned)", "EuroBitBroker.net (CONSOB warned)",
-    "AlphaTradePro.eu (CONSOB warned)", "InvestFastTrust.com (CONSOB warned)",
-    "MaxiFundsCapital.io (CONSOB warned)", "PrimeBitTrade.io (CONSOB warned)",
+    // CSA/OSC-warned style names (similar to public warnings format)
+    "FXOpenMarkets.io (CSA warned)", "TradeProElite.com (OSC warned)",
+    "GoldenFXCapital.com (CSA warned)", "EuroBitBroker.net (BCSC warned)",
+    "AlphaTradePro.eu (AMF warned)", "InvestFastTrust.com (CSA warned)",
+    "MaxiFundsCapital.io (OSC warned)", "PrimeBitTrade.io (CSA warned)",
     "TradingMillionaireFX.io", "ETrade-Crypto.eu",
     "WiseTradeCapital.io", "CryptoLeaderInvest.com",
     "RoyalFXMarkets.eu", "DigitalGlobalCapital.io",
     "EuroFinanceCapital.net", "GlobalCryptoInvestments.io",
     // Recovery-scam (secondary scam) platforms
     "CoinReturns.club (recovery scam)",
-    "RecoveryFundsEU.org (recovery scam)",
+    "RecoveryFundsCA.org (recovery scam)",
     "BlockchainExpertsRecovery.com (recovery scam)",
-    "AssetRecoveryEU.io (recovery scam)",
+    "AssetRecoveryCA.io (recovery scam)",
     "FundsBackPro.com (recovery scam)",
-    "ItalyCryptoRecovery.net (recovery scam)",
+    "CanadaCryptoRecovery.net (recovery scam)",
     // Pig-butchering / romance investment apps
     "MetaProTrading app (pig-butchering)",
     "GlobalCoinPro app (pig-butchering)",
@@ -125,62 +125,58 @@ const DATABASES = {
       // International authorities
       "SEFIV cross-check", "SEFIV jurisdictional registry",
       "OLAF anti-fraud database", "OLAF case correlation",
-      "BCE / ECB payment rails registry", "BCE supervisory data feed",
       "Blockchain forensic graph", "Blockchain cluster correlation",
-      "ESMA supervisory cross-check", "ESMA warned-firms registry",
       "FINRA disciplinary records", "FINRA broker check",
       "S.F.O. financial-crime intelligence", "S.F.O. cross-border watchlist",
       "OFAC sanctions list", "EU consolidated sanctions list",
       "FATF high-risk jurisdictions", "GAFI grey list",
       "Chainalysis KYT cluster", "TRM Labs forensic graph",
-      "Elliptic risk score", "AMLD6 reporting node",
+      "Elliptic risk score", "AML reporting node",
       "EUROPOL fraud cluster", "INTERPOL bulletins",
       "Egmont Group FIU exchange",
       // Canadian authorities & registries
-      "Banca d'Italia UIF reports (public summaries)",
-      "Banca d'Italia Centrale Allarme Interbancaria (CAI)",
-      "CONSOB warning list (offerte abusive)",
-      "OAM register (cambiavalute & money transfer)",
-      "IVASS insurance fraud register",
-      "Guardia di Finanza Nucleo Speciale Polizia Valutaria",
-      "DIA — Direzione Investigativa Antimafia",
-      "Polizia Postale CNAIPIC database",
-      "AGID PEC trust list",
-      "ABI — Associazione Bancaria Canadese fraud feed",
-      "Agenzia delle Entrate anti-fraud cluster",
+      "FINTRAC suspicious transaction reports (STRs)",
+      "FINTRAC large cash transaction reports (LCTRs)",
+      "CAFC fraud intelligence database",
+      "CSA warned-firms registry (aretheyregistered.ca)",
+      "OSC investor warnings list",
+      "BCSC investment caution list",
+      "AMF Québec enforcement actions",
+      "RCMP financial crime intelligence",
+      "OSFI regulated entities registry",
+      "CBA — Canadian Bankers Association fraud feed",
+      "Interac e-Transfer fraud patterns",
       // AML patterns
       "AML pattern: pig-butchering", "AML pattern: layering",
       "AML pattern: smurfing", "AML pattern: mule cluster",
       "AML pattern: trade-based laundering",
     ],
     it: [
-      // Autorità internazionali
+      // International authorities
       "Controllo SEFIV", "Registro giurisdizionale SEFIV",
       "Database antifrode OLAF", "Correlazione casi OLAF",
-      "Registro circuiti di pagamento BCE", "Flusso dati supervisione BCE",
       "Grafo forense blockchain", "Correlazione cluster blockchain",
-      "Controllo supervisione ESMA", "Registro società segnalate ESMA",
       "Archivio disciplinare FINRA", "Verifica broker FINRA",
       "Intelligence crimini finanziari S.F.O.", "Watchlist transfrontaliera S.F.O.",
       "Lista sanzioni OFAC", "Lista consolidata sanzioni UE",
       "Giurisdizioni ad alto rischio FATF", "Lista grigia GAFI",
       "Cluster KYT Chainalysis", "Grafo forense TRM Labs",
-      "Punteggio di rischio Elliptic", "Nodo di reporting AMLD6",
+      "Punteggio di rischio Elliptic", "Nodo di reporting AML",
       "Cluster frodi EUROPOL", "Bollettini INTERPOL",
-      "Egmont Group — scambio UIF",
-      // Autorità e registri canadesi
-      "Report UIF Banca d'Italia (sintesi pubbliche)",
-      "Centrale Allarme Interbancaria (CAI) — Banca d'Italia",
-      "Lista CONSOB offerte abusive (delibere)",
-      "Registro OAM cambiavalute & money transfer",
-      "Registro frodi IVASS",
-      "Guardia di Finanza — Nucleo Speciale Polizia Valutaria",
-      "DIA — Direzione Investigativa Antimafia",
-      "Database Polizia Postale CNAIPIC",
-      "Lista PEC certificate AGID",
-      "Feed antifrode ABI — Associazione Bancaria Canadese",
-      "Cluster antifrode Agenzia delle Entrate",
-      // Pattern AML
+      "Egmont Group — scambio FIU",
+      // Canadian authorities & registries
+      "FINTRAC report transazioni sospette (STRs)",
+      "FINTRAC report grandi transazioni in contanti (LCTRs)",
+      "Database intelligence frodi CAFC",
+      "Registro società segnalate CSA (aretheyregistered.ca)",
+      "Lista avvisi investitori OSC",
+      "Lista cautela investimenti BCSC",
+      "Azioni esecutive AMF Québec",
+      "Intelligence crimini finanziari RCMP",
+      "Registro entità regolate OSFI",
+      "Feed antifrode CBA — Canadian Bankers Association",
+      "Pattern frodi Interac e-Transfer",
+      // AML patterns
       "Pattern AML: pig-butchering", "Pattern AML: stratificazione",
       "Pattern AML: smurfing", "Pattern AML: cluster di prestanome",
       "Pattern AML: trade-based laundering",
@@ -214,8 +210,8 @@ const DATABASES = {
 
 // Stage-key labels in the log header (the "SCANSIONE :: XXX" line)
 const STAGE_KEY_LABEL = {
-  en: { init: "INIT", italian_banks: "BANKS", sepa: "SEPA", fintech: "FINTECH", crypto: "CRYPTO", brokers: "BROKERS", aml: "AML", locating: "CORE" },
-  it: { init: "AVVIO", italian_banks: "BANCHE", sepa: "SEPA", fintech: "FINTECH", crypto: "CRYPTO", brokers: "BROKER", aml: "AML", locating: "CORE" },
+  en: { init: "INIT", italian_banks: "BANKS", sepa: "WIRE", fintech: "FINTECH", crypto: "CRYPTO", brokers: "BROKERS", aml: "AML", locating: "CORE" },
+  it: { init: "AVVIO", italian_banks: "BANCHE", sepa: "WIRE", fintech: "FINTECH", crypto: "CRYPTO", brokers: "BROKER", aml: "AML", locating: "CORE" },
 };
 
 // Status-word & prefix translations
@@ -224,8 +220,8 @@ const STATUS_I18N = {
   it: { scanned: "scansionato", clean: "pulito", ok: "ok", flagged: "SEGNALATO", suspect: "SOSPETTO", tainted: "COMPROMESSO", match: "match", acct: "conto", txn: "txn", tx: "tx", exposure: "esposizione", cluster_score: "punteggio_cluster" },
 };
 const PREFIX_I18N = {
-  en: { BANK: "BANK", SEPA: "SEPA", FINTECH: "FINTECH", CHAIN: "CHAIN", BROKER: "BROKER", AML: "AML", CORE: "CORE", INIT: "INIT" },
-  it: { BANK: "BANCA", SEPA: "SEPA", FINTECH: "FINTECH", CHAIN: "CHAIN", BROKER: "BROKER", AML: "AML", CORE: "CORE", INIT: "INIT" },
+  en: { BANK: "BANK", SEPA: "WIRE", FINTECH: "FINTECH", CHAIN: "CHAIN", BROKER: "BROKER", AML: "AML", CORE: "CORE", INIT: "INIT" },
+  it: { BANK: "BANCA", SEPA: "WIRE", FINTECH: "FINTECH", CHAIN: "CHAIN", BROKER: "BROKER", AML: "AML", CORE: "CORE", INIT: "INIT" },
 };
 
 function _hex(len) {
@@ -233,11 +229,13 @@ function _hex(len) {
   let s = "0x"; for (let i = 0; i < len; i++) s += c[Math.floor(Math.random() * 16)];
   return s;
 }
-function _iban() {
-  const cc = ["IT","DE","LT","MT","CY","BG","NL","ES"][Math.floor(Math.random() * 8)];
-  let s = cc + String(Math.floor(Math.random() * 100)).padStart(2, "0");
-  for (let i = 0; i < 22; i++) s += "0123456789"[Math.floor(Math.random() * 10)];
-  return s;
+function _acctNum() {
+  // Generate Canadian-style transit + account number
+  const transit = String(Math.floor(Math.random() * 90000 + 10000));
+  const inst = String(Math.floor(Math.random() * 900 + 100));
+  let acct = "";
+  for (let i = 0; i < 12; i++) acct += "0123456789"[Math.floor(Math.random() * 10)];
+  return `${transit}-${inst}-${acct}`;
 }
 function _line(stageKey, lang = "it") {
   const r = Math.random();
@@ -247,10 +245,10 @@ function _line(stageKey, lang = "it") {
   const nodeId = () => `NODE-${Math.floor(Math.random() * 9000 + 1000)}`;
   const refId = () => _hex(8).slice(2).toUpperCase();
   if (stageKey === "italian_banks") {
-    return `[${P.BANK}] ${nodeId()}  ·  ${S.acct}=${_iban().slice(0, 18)}…  ${S.match}=${r < 0.07 ? S.flagged : S.clean}`;
+    return `[${P.BANK}] ${nodeId()}  ·  ${S.acct}=${_acctNum()}  ${S.match}=${r < 0.07 ? S.flagged : S.clean}`;
   }
   if (stageKey === "sepa") {
-    return `[${P.SEPA}] CLUSTER-${refId()}  ·  ${_iban()}  ·  ref=${refId()}`;
+    return `[${P.SEPA}] CLUSTER-${refId()}  ·  ${_acctNum()}  ·  ref=${refId()}`;
   }
   if (stageKey === "fintech") {
     return `[${P.FINTECH}] INST-${refId()}  ·  ${S.txn}=${_hex(10).slice(2)}  ·  ${r < 0.1 ? S.suspect : S.ok}`;

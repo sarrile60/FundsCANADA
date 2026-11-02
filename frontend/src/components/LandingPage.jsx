@@ -144,7 +144,7 @@ function FeaturedInStrip() {
   );
 }
 
-function ItalianContext() {
+function CanadianContext() {
   const { t } = useI18n();
   const cards = [
     { icon: Banknote,  k: "c1" }, { icon: TrendingUp, k: "c2" },
@@ -461,7 +461,7 @@ export default function LandingPage() {
         <TrustWarning/>
         <FeeDisclosure/>
         <FeaturedInStrip/>
-        <ItalianContext/>
+        <CanadianContext/>
         <HowItWorks/>
         <AuthorityPath/>
         <TracingTeaser/>
