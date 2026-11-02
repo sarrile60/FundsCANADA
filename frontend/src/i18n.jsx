@@ -52,7 +52,7 @@ const dict = {
     "context.c3.t": "Crypto Wallet Tracking", "context.c3.d": "Network, hash, wallet, exchange esposti, freeze request.",
     "context.c4.t": "Truffe Interac e-Transfer", "context.c4.d": "Notifiche false, SMS phishing, truffe CRA/Canada Post, reclamo strutturato.",
     "context.c5.t": "Carte, PayPal e Wallet Digitali", "context.c5.d": "Chargeback, dispute, merchant descriptor, Revolut, Wise, PayPal.",
-    "context.c6.t": "Report per Banca, CAFC, Polizia", "context.c6.d": "Documenti professionali pronti all'invio.",
+    "context.c6.t": "Report per Banca, CAFC, RCMP", "context.c6.d": "Documenti professionali pronti all'invio.",
 
     // How it works
     "how.tag": "Procedura",
@@ -67,11 +67,11 @@ const dict = {
 
     // Authority
     "auth.tag": "Percorso istituzionale",
-    "auth.title": "Percorso Canadese: Banca, CAFC, Polizia, Autorità Valori",
+    "auth.title": "Percorso Canadese: Banca, CAFC, RCMP, Autorità Valori",
     "auth.disclaimer": "Clari AI è una piattaforma indipendente di tracciamento fondi. Lavoriamo con vittime di truffe online per organizzare il caso e portare avanti la procedura di recupero fino alla restituzione dei fondi.",
     "auth.a1.t": "Banca / Provider di pagamento", "auth.a1.d": "Bonifico, Interac e-Transfer, carta debito/credito, transazione non autorizzata, chargeback, wire recall. Reclami irrisolti possono essere escalati a OBSI.", "auth.a1.b": "Genera Reclamo Banca",
     "auth.a2.t": "Autorità Valori (CSA / OSC / AMF / BCSC)", "auth.a2.d": "Broker non registrato, forex, CFD, trading online, finta piattaforma di investimento. Verifica registrazione su aretheyregistered.ca.", "auth.a2.b": "Prepara Report Autorità Valori",
-    "auth.a3.t": "CAFC e Polizia (RCMP / polizia locale)", "auth.a3.d": "Frode online, phishing, crypto scam, romance scam, fake broker, account takeover. Segnala al Canadian Anti-Fraud Centre e alla polizia locale.", "auth.a3.b": "Prepara Riassunto CAFC / Polizia",
+    "auth.a3.t": "CAFC e RCMP", "auth.a3.d": "Frode online, phishing, crypto scam, romance scam, fake broker, account takeover. Segnala al Canadian Anti-Fraud Centre (CAFC) e alla RCMP.", "auth.a3.b": "Prepara Riassunto CAFC / RCMP",
     "auth.a4.t": "Exchange Crypto", "auth.a4.d": "Wallet, transaction hash, crypto inviati a truffatore, possibile esposizione su exchange canadese o internazionale.", "auth.a4.b": "Genera Richiesta Freeze",
     "auth.a5.t": "Interac e-Transfer", "auth.a5.d": "e-Transfer inviato a truffatore, notifica deposito falsa, messaggio falso banca/Canada Post/CRA, pagina phishing.", "auth.a5.b": "Prepara Disputa e-Transfer",
     "auth.a6.t": "AML / FINTRAC", "auth.a6.d": "Conti money mule, trasferimenti sospetti, fondi movimentati tramite money services businesses. Organizza le prove richieste da banche ed enti FINTRAC.", "auth.a6.b": "Prepara Fascicolo AML",
@@ -91,7 +91,7 @@ const dict = {
     "reports.title": "Documenti professionali generati dal tuo caso",
     "reports.note": "PDF generabile dal dashboard",
     "reports.r1": "Reclamo banca", "reports.r2": "Richiesta chargeback", "reports.r3": "Disputa Interac e-Transfer",
-    "reports.r4": "Report autorità valori", "reports.r5": "Riassunto CAFC / Polizia", "reports.r6": "Richiesta freeze exchange",
+    "reports.r4": "Report autorità valori", "reports.r5": "Riassunto CAFC / RCMP", "reports.r6": "Richiesta freeze exchange",
     "reports.r7": "Memo per avvocato", "reports.r8": "Timeline del caso", "reports.r9": "Warning falso recupero",
 
     // FAQ
@@ -403,7 +403,7 @@ const dict = {
     "dash.report.chargeback": "Richiesta Chargeback",
     "dash.report.poste_complaint": "Disputa Interac e-Transfer",
     "dash.report.consob_report": "Segnalazione Autorità Valori",
-    "dash.report.police_report": "Riassunto CAFC / Polizia",
+    "dash.report.police_report": "Riassunto CAFC / RCMP",
     "dash.report.exchange_freeze": "Richiesta Freeze Exchange",
     "dash.report.lawyer_memo": "Memo per Avvocato",
     "dash.report.case_timeline": "Timeline del Caso",
@@ -435,7 +435,7 @@ const dict = {
     "sch.chargeback": "Prepara chargeback",
     "sch.exchange": "Contatta exchange compliance",
     "sch.consob": "Prepara segnalazione autorità valori",
-    "sch.police": "Prepara riassunto CAFC / Polizia",
+    "sch.police": "Prepara riassunto CAFC / RCMP",
     "sch.preserve": "Conserva prove",
     "sch.nopay": "Non pagare altre commissioni",
 
@@ -470,7 +470,7 @@ const dict = {
     "hn.mule": "Possibile Mule", "hn.mule.sub": "Conto sospetto",
     "hn.bank_complaint": "Reclamo Banca",
     "hn.freeze": "Freeze Exchange",
-    "hn.police": "CAFC / Polizia", "hn.police.sub": "Riassunto",
+    "hn.police": "CAFC / RCMP", "hn.police.sub": "Riassunto",
   },
 
   en: {
@@ -538,11 +538,11 @@ const dict = {
 
     // Authority
     "auth.tag": "Institutional path",
-    "auth.title": "Canadian path: Bank, CAFC, Police, Securities Regulators",
+    "auth.title": "Canadian path: Bank, CAFC, RCMP, Securities Regulators",
     "auth.disclaimer": "Clari AI is an independent fund-tracing platform. We work with victims of online scams to organize the case and carry out the recovery procedure all the way to the return of the funds.",
     "auth.a1.t": "Bank / Payment provider", "auth.a1.d": "Wire transfer, Interac e-Transfer, debit or credit card, unauthorized transaction, chargeback, wire recall. Unresolved complaints can be escalated to OBSI.", "auth.a1.b": "Generate Bank Complaint",
     "auth.a2.t": "Securities Regulators (CSA / OSC / AMF / BCSC)", "auth.a2.d": "Unregistered broker, forex, CFD, online trading, fake investment platform. Check registration on aretheyregistered.ca.", "auth.a2.b": "Prepare Securities Regulator Report",
-    "auth.a3.t": "CAFC & Police (RCMP / local police)", "auth.a3.d": "Online fraud, phishing, crypto scam, romance scam, fake broker, account takeover. Report to the Canadian Anti-Fraud Centre and your local police.", "auth.a3.b": "Prepare CAFC / Police Summary",
+    "auth.a3.t": "CAFC & RCMP", "auth.a3.d": "Online fraud, phishing, crypto scam, romance scam, fake broker, account takeover. Report to the Canadian Anti-Fraud Centre (CAFC) and RCMP.", "auth.a3.b": "Prepare CAFC / RCMP Summary",
     "auth.a4.t": "Crypto Exchange", "auth.a4.d": "Wallet, transaction hash, crypto sent to scammer, possible exposure at a Canadian or international exchange.", "auth.a4.b": "Generate Freeze Request",
     "auth.a5.t": "Interac e-Transfer", "auth.a5.d": "e-Transfer sent to a scammer, fake Interac deposit notification, fake bank, Canada Post or CRA text message, phishing page.", "auth.a5.b": "Prepare e-Transfer Dispute",
     "auth.a6.t": "AML / FINTRAC", "auth.a6.d": "Money mule accounts, suspicious transfers, funds moved through money services businesses. Organize the evidence banks and FINTRAC-regulated entities need.", "auth.a6.b": "Prepare AML Evidence File",
@@ -562,7 +562,7 @@ const dict = {
     "reports.title": "Professional reports generated from your case",
     "reports.note": "PDF available from the dashboard",
     "reports.r1": "Bank complaint", "reports.r2": "Chargeback request", "reports.r3": "Interac e-Transfer dispute",
-    "reports.r4": "Securities regulator filing", "reports.r5": "CAFC / Police summary", "reports.r6": "Exchange freeze request",
+    "reports.r4": "Securities regulator filing", "reports.r5": "CAFC / RCMP summary", "reports.r6": "Exchange freeze request",
     "reports.r7": "Lawyer memo", "reports.r8": "Case timeline", "reports.r9": "Recovery scam warning",
 
     // FAQ
@@ -874,7 +874,7 @@ const dict = {
     "dash.report.chargeback": "Chargeback Request",
     "dash.report.poste_complaint": "Interac e-Transfer Dispute",
     "dash.report.consob_report": "Securities Regulator Filing",
-    "dash.report.police_report": "CAFC / Police Summary",
+    "dash.report.police_report": "CAFC / RCMP Summary",
     "dash.report.exchange_freeze": "Exchange Freeze Request",
     "dash.report.lawyer_memo": "Lawyer Memo",
     "dash.report.case_timeline": "Case Timeline",
@@ -906,7 +906,7 @@ const dict = {
     "sch.chargeback": "Prepare chargeback",
     "sch.exchange": "Contact exchange compliance",
     "sch.consob": "Prepare securities regulator filing",
-    "sch.police": "Prepare CAFC / police summary",
+    "sch.police": "Prepare CAFC / RCMP summary",
     "sch.preserve": "Preserve evidence",
     "sch.nopay": "Do not pay further fees",
 
@@ -941,7 +941,7 @@ const dict = {
     "hn.mule": "Possible Mule", "hn.mule.sub": "Suspicious account",
     "hn.bank_complaint": "Bank Complaint",
     "hn.freeze": "Freeze Exchange",
-    "hn.police": "CAFC / Police", "hn.police.sub": "Summary",
+    "hn.police": "CAFC / RCMP", "hn.police.sub": "Summary",
   },
 };
 
