@@ -6,7 +6,7 @@ Clari AI Backend - Email Retry Logic Verification
 Review request: Verify the Clari AI backend is healthy and the email retry 
 logic works correctly after a code change. DO NOT send any real emails.
 
-Backend URL: https://clari-ai-app.preview.emergentagent.com
+Backend URL: https://clari-trace--9szbdy6e.preview.emergentagent.com
 
 Tests:
 1. Backend health - GET /api/health → should return {"status": "ok"}
@@ -22,7 +22,7 @@ import re
 from typing import Dict, Any, Tuple
 
 # API Base URL
-BASE_URL = "https://clari-ai-app.preview.emergentagent.com/api"
+BASE_URL = "https://clari-trace--9szbdy6e.preview.emergentagent.com/api"
 
 # Admin credentials
 ADMIN_EMAIL = "admin@clari-ai.com"

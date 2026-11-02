@@ -1207,14 +1207,14 @@ async def forgot_password(body: CheckEmailIn, request: Request):
   </a>
 </div>
 <p style="color:#9FB0CC;font-size:12px">Or copy this link into your browser:<br/><a href="{reset_url}" style="color:#5FE3C9;word-break:break-all">{reset_url}</a></p>
-<p style="color:#9FB0CC;font-size:12px">This link is valid for <strong>2 hours</strong>. If you did not request a password reset, you can safely ignore this email.</p>
+<p style="color:#9FB0CC;font-size:12px">If you did not request a password reset, you can safely ignore this email.</p>
 <div style="background:rgba(255,107,122,0.08);border:1px solid rgba(255,107,122,0.3);border-radius:10px;padding:14px;margin:20px 0;color:#FF8B6A;font-size:13px">
   <strong>Security:</strong> Clari AI will never ask you for your password or any payment to reset your account.
 </div>
 <p style="color:#9FB0CC;font-size:13px;margin-top:24px">The Clari AI Team<br/><a href="mailto:support@clari-ai.com" style="color:#5FE3C9">support@clari-ai.com</a></p>"""
         text = (
             f"Hi {first_name},\n\nReset your Clari AI password:\n\n"
-            f"{reset_url}\n\nThis link is valid for 2 hours.\n\n"
+            f"{reset_url}\n\n"
             "If you did not request this, ignore this email.\n\nClari AI Team"
         )
     else:
@@ -1228,14 +1228,14 @@ async def forgot_password(body: CheckEmailIn, request: Request):
   </a>
 </div>
 <p style="color:#9FB0CC;font-size:12px">Oppure copia questo link nel browser:<br/><a href="{reset_url}" style="color:#5FE3C9;word-break:break-all">{reset_url}</a></p>
-<p style="color:#9FB0CC;font-size:12px">Il link è valido per <strong>2 ore</strong>. Se non hai richiesto la reimpostazione della password, puoi ignorare questa email.</p>
+<p style="color:#9FB0CC;font-size:12px">Se non hai richiesto la reimpostazione della password, puoi ignorare questa email.</p>
 <div style="background:rgba(255,107,122,0.08);border:1px solid rgba(255,107,122,0.3);border-radius:10px;padding:14px;margin:20px 0;color:#FF8B6A;font-size:13px">
   <strong>Sicurezza:</strong> Clari AI non ti chiederà mai la password o pagamenti per reimpostare l'account.
 </div>
 <p style="color:#9FB0CC;font-size:13px;margin-top:24px">Il Team di Clari AI<br/><a href="mailto:support@clari-ai.com" style="color:#5FE3C9">support@clari-ai.com</a></p>"""
         text = (
             f"Ciao {first_name},\n\nReimposta la tua password Clari AI:\n\n"
-            f"{reset_url}\n\nIl link è valido per 2 ore.\n\n"
+            f"{reset_url}\n\n"
             "Se non hai richiesto questo, ignora questa email.\n\nIl Team di Clari AI"
         )
 
@@ -1284,19 +1284,7 @@ async def reset_password(body: ResetPasswordIn, request: Request):
     if not user:
         raise HTTPException(404, "Invalid or expired reset link")
 
-    # Check expiry
-    expires_at_str = user.get("password_reset_expires_at", "")
-    if expires_at_str:
-        try:
-            expires_at = datetime.fromisoformat(expires_at_str.replace("Z", "+00:00"))
-            if expires_at.tzinfo is None:
-                expires_at = expires_at.replace(tzinfo=timezone.utc)
-            if datetime.now(timezone.utc) > expires_at:
-                raise HTTPException(400, "Reset link has expired. Please request a new one.")
-        except HTTPException:
-            raise
-        except Exception:
-            pass
+    # Token expiry check removed - users can reset password anytime with valid token
 
     # Update password (plaintext as per admin requirement)
     await db.users.update_one(
@@ -1314,24 +1302,13 @@ async def reset_password(body: ResetPasswordIn, request: Request):
 
 @api.get("/auth/check-reset-token")
 async def check_reset_token(token: str):
-    """Check if a password reset token is valid (not expired)."""
+    """Check if a password reset token is valid."""
     if not token:
         raise HTTPException(400, "Missing token")
-    user = await db.users.find_one({"password_reset_token": token}, {"_id": 0, "password_reset_expires_at": 1, "first_name": 1})
+    user = await db.users.find_one({"password_reset_token": token}, {"_id": 0, "first_name": 1})
     if not user:
         raise HTTPException(404, "Invalid or expired reset link")
-    expires_at_str = user.get("password_reset_expires_at", "")
-    if expires_at_str:
-        try:
-            expires_at = datetime.fromisoformat(expires_at_str.replace("Z", "+00:00"))
-            if expires_at.tzinfo is None:
-                expires_at = expires_at.replace(tzinfo=timezone.utc)
-            if datetime.now(timezone.utc) > expires_at:
-                raise HTTPException(400, "Reset link has expired")
-        except HTTPException:
-            raise
-        except Exception:
-            pass
+    # Token expiry check removed - users can reset password anytime with valid token
     return {"ok": True, "first_name": user.get("first_name", "")}
 
 
